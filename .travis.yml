@@ -8,7 +8,7 @@ python: 3.6
 
 install: pip install ansible molecule docker-py
 before_test:
-- cd ..
-- ln -s pacifica ansible-pacifica
-- cd pacifica
+  - cd ..
+  - ln -s pacifica ansible-pacifica
+  - cd pacifica
 script: molecule test
