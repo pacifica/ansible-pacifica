@@ -7,7 +7,7 @@ language: python
 python: 3.6
 
 install: pip install ansible molecule docker-py
-before_test:
+before_install:
   - cd ..
   - ln -s pacifica ansible-pacifica
   - cd pacifica
