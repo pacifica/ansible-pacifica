@@ -1,0 +1,7 @@
+---
+pacifica_module: archiveinterface
+no_db: true
+socket_port: "8080"
+env_vars:
+   ARCHIVEINTERFACE_CONFIG: "/opt/default/archiveinterface.ini"
+   ARCHIVEINTERFACE_CPCONFIG: "/opt/default/archiveinterface-cp.ini"

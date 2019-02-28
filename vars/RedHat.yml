@@ -1,0 +1,14 @@
+---
+__setup_packages:
+  - epel-release
+  - centos-release-scl
+  - centos-release-scl-rh
+  - gcc
+  - make
+  - glibc-devel
+  - kernel-devel
+__python_packages:
+  - python
+  - python2-pip
+  - python-setuptools
+  - python-virtualenv

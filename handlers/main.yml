@@ -1,2 +1,22 @@
 ---
-# handlers file for pacifica
+- name: "Pacifica: Restart uWSGI Service"
+  retries: 3
+  delay: 3
+  register: result
+  until: result.get('status', {}).get('SubState', '') == 'running'
+  systemd:
+    name: "{{ item }}"
+    daemon_reload: true
+    state: restarted
+  loop: "{{ pacifica_enabled_services }}"
+
+- name: "Pacifica: Reload uWSGI Service"
+  retries: 3
+  delay: 3
+  register: result
+  until: result.get('status', {}).get('SubState', '') == 'running'
+  systemd:
+    name: "{{ item }}"
+    daemon_reload: true
+    state: reloaded
+  loop: "{{ pacifica_enabled_services }}"

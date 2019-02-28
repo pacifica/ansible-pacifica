@@ -1,0 +1,7 @@
+---
+pacifica_module: notifications
+celery: true
+no_db: true
+env_vars:
+  NOTIFICATIONS_CONFIG: "/opt/default/notifications.ini"
+  NOTIFICATIONS_CPCONFIG: "/opt/default/notifications-cp.ini"

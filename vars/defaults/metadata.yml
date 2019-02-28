@@ -1,0 +1,6 @@
+---
+pacifica_module: metadata
+socket_port: "8121"
+env_vars:
+  METADATA_CONFIG: "/opt/default/metadata.ini"
+  METADATA_CPCONFIG: "/opt/default/metadata-cp.ini"

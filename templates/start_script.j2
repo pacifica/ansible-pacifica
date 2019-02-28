@@ -1,0 +1,30 @@
+#!/bin/bash
+. {{ value.virtualenv_path|default('/opt') }}/{{ value.virtualenv|default('default') }}/bin/activate
+{% if value.env_vars is defined %}
+{% for env_var, env_val in value.env_vars.items() %}
+export {{ env_var }}={{ env_val }}
+{% endfor %}
+{% endif %}
+{% if value.celery is defined %}
+exec celery -A pacifica.{{ value.pacifica_module }}.tasks worker -l info
+{% else %}
+{% if value.no_db is defined %}
+# no_db set for {{ service }} in ansible vars dictionary
+{% else %}
+pacifica-{{ value.pacifica_module }}-cmd dbsync
+{% endif %}
+{% if value.override_exec is defined %}
+exec -a {{ service }} {{ value.override_exec }}
+{% else %}
+exec -a {{ service }} uwsgi \
+--logger syslog:{{ service }} \
+--http-socket :{{ value.socket_port }} \
+--master \
+--die-on-term \
+{% if value.processes is defined %}
+--processes {{ value.processes }} \
+{% endif %}
+--buffer-size {{ value.buffer_size|default('12288') }} \
+--module 'pacifica.{{ value.pacifica_module }}.wsgi'
+{% endif %}
+{% endif %}

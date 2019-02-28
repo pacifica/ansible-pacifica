@@ -1,48 +1,78 @@
-Role Name
+Pacifica
 =========
 
-A brief description of the role goes here.
+This Ansible role defines configuration for deploying Pacifica services in an
+Ansible managed infrastructure.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should
-be mentioned here. For instance, if the role uses the EC2 module, it may be a
-good idea to mention in this section that the boto package is required.
+There are no requirements for this role currently. However, the Pacifica
+services do depend on other services depending on configuration. So, please
+be aware if you configure a service to use PostgreSQL you should configure
+PostgreSQL prior to including this role as part of your deployment.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including
-any variables that are in defaults/main.yml, vars/main.yml, and any variables
-that can/should be set via parameters to the role. Any variables that are read
-from other roles and/or the global scope (ie. hostvars, group vars, etc.) should
-be mentioned here as well.
+The role variables are to install Python on the different distributions. This
+can be overridden by setting the `setup_packages` and `python_packages` to
+a list of custom packages in a `default.yml` in a consuming role.
+Alternatively, if the consuming playbook is installing python by other means,
+you can set `external_python` to any value and the python installation task
+will be skipped.
+
+The other role variables are default configurations for the different Pacifica
+services. Each Pacifica service has different configuration requirements. These
+configuration requirements are consistent between services and can be configured
+the same way across services. For example, both the `ingest` and `metadata`
+services require databases and those are managed by the same interface. However,
+the `ingest` process requires a Celery backend where the `metadata` does not.
+
+Role Defaults
+--------------
+
+The role defaults are there to control the user driven configuration of the
+Pacifica services. Each service configuration should be a dictionary named 
+in the `pacifica_available_services` dictionary. The service configurations
+are then referenced by items in the `pacifica_enabled_services` list.
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in
-regards to parameters that may need to be set for other roles, or variables that
-are used from other roles.
+There are currently no dependencies for this role. However, if you configure a
+Pacifica service to use a MySQL or PostgreSQL database to store its state then
+you are responsible for making sure that MySQL or PostgreSQL service is deployed
+and configured somewhere in your infrastructure. This includes other optional
+dependencies like ElasticSearch.
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables
-passed in as parameters) is always nice for users too:
+Including the role is similar to other ansible roles. There are examples of this
+in the `molecule` subdirectory for picking out specific services to deploy on
+specific systems.
 
+Simple Example:
+```
     - hosts: servers
       roles:
-         - { role: pacifica, x: 42 }
+         - role: pacifica
+           pacifica_enabled_services:
+             - metadata
+             - policy
+```
 
 License
 -------
 
-BSD
+LGPLv3
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a
-website (HTML is not allowed).
+Pacifica is a community lead effort and supporting these services are handled by the
+Ansible team. Some of those members are referenced below.
+
+ * David Brown <dmlb2000@gmail.com>: Primary Pacifica Architect
+ * Ian Smith <gitbytes@gmail.com>: Community Contributor

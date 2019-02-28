@@ -1,0 +1,28 @@
+---
+- name: Converge
+  hosts: all
+  roles:
+    - role: redis
+      redis_travis_ci: true
+    - role: postgresql
+      postgresql_databases:
+        - name: pacifica_notify
+          owner: pacifica
+      postgresql_users:
+        - name: pacifica
+          pass: password
+          encrypted: false
+    - role: pacifica
+      pacifica_notify_config: &pacifica_notify_config
+        celery:
+          broker_url: redis://127.0.0.1:6379/0
+        database:
+          peewee_url: postgres://pacifica:password@127.0.0.1:5432/pacifica_notify
+      pacifica_available_services:
+        notify_backend:
+          ini_config: *pacifica_notify_config
+        notify_frontend:
+          ini_config: *pacifica_notify_config
+      pacifica_enabled_services:
+        - notify_frontend
+        - notify_backend

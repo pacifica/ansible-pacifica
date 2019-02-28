@@ -1,0 +1,29 @@
+---
+- name: Converge
+  hosts: all
+  roles:
+    - role: redis
+      redis_travis_ci: true
+    - role: postgresql
+      postgresql_databases:
+        - name: pacifica_cartd
+          owner: pacifica
+      postgresql_users:
+        - name: pacifica
+          pass: password
+          encrypted: false
+    - role: pacifica
+      pacifica_cartd_config: &pacifica_cartd_config
+        celery:
+          broker_url: redis://127.0.0.1:6379/0
+        database:
+          peewee_url: postgres://pacifica:password@127.0.0.1:5432/pacifica_cartd
+      pacifica_available_services:
+        cartd_backend:
+          ini_config: *pacifica_cartd_config
+        cartd_frontend:
+          ini_config: *pacifica_cartd_config
+      pacifica_enabled_services:
+        - cartd_frontend
+        - cartd_backend
+        - proxy

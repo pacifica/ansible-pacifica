@@ -1,2 +1,15 @@
 ---
-# defaults file for pacifica
+pacifica_package_timeout: 300
+pacifica_enabled_services: []
+pacifica_available_services:
+  archiveinterface: {}
+  metadata: {}
+  policy: {}
+  uniqueid: {}
+  proxy: {}
+  cartd_frontend: {}
+  cartd_backend: {}
+  ingest_frontend: {}
+  ingest_backend: {}
+  notify_frontend: {}
+  notify_backend: {}
