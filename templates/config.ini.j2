@@ -1,0 +1,6 @@
+{% for section_name, section in value.items() %}
+[{{ section_name }}]
+{% for key, value in section.items() %}
+{{ key }}: {{ value }}
+{% endfor %}
+{% endfor %}

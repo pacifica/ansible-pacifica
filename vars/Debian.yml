@@ -1,0 +1,8 @@
+---
+__setup_packages:
+  - build-essential
+__python_packages:
+  - python
+  - python-pip
+  - python-setuptools
+  - python-virtualenv

@@ -1,0 +1,22 @@
+---
+- name: Converge
+  hosts: all
+  roles:
+    - role: elasticsearch
+      es_instance_name: pacifica
+      es_enable_xpack: false
+    - role: postgresql
+      postgresql_databases:
+        - name: pacifica_metadata
+          owner: pacifica
+        - name: pacifica_uniqueid
+          owner: pacifica
+      postgresql_users:
+        - name: pacifica
+          pass: metadata
+          encrypted: false
+    - role: pacifica
+      pacifica_enabled_services:
+        - metadata
+        - policy
+        - uniqueid

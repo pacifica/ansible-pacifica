@@ -1,0 +1,6 @@
+---
+pacifica_module: uniqueid
+socket_port: "8051"
+env_vars:
+  UNIQUEID_CONFIG: "/opt/default/uniqueid.ini"
+  UNIQUEID_CPCONFIG: "/opt/default/uniqueid-cp.ini"

@@ -1,0 +1,6 @@
+---
+pacifica_module: notifications
+socket_port: "8070"
+env_vars:
+  NOTIFICATIONS_CONFIG: "/opt/default/notifications.ini"
+  NOTIFICATIONS_CPCONFIG: "/opt/default/notifications-cp.ini"

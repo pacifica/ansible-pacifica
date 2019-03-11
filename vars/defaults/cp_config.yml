@@ -1,0 +1,11 @@
+---
+global:
+  log.screen: 'True'
+  server.socket_host: "'0.0.0.0'"
+  server.max_request_body_size: 0
+  server.socket_timeout: 60
+  response.timeout: 3600
+/:
+  request.dispatch: 'cherrypy.dispatch.MethodDispatcher()'
+  tools.response_headers.on: 'True'
+  tools.response_headers.headers: "[('Content-Type', 'application/json')]"

@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  roles:
+    - role: pacifica
+      pacifica_enabled_services:
+        - archiveinterface

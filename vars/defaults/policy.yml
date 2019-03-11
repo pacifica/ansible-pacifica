@@ -1,0 +1,7 @@
+---
+pacifica_module: policy
+socket_port: "8181"
+no_db: true
+env_vars:
+  POLICY_CONFIG: "/opt/default/policy.ini"
+  POLICY_CPCONFIG: "/opt/default/policy-cp.ini"

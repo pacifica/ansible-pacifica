@@ -1,0 +1,28 @@
+---
+- name: Converge
+  hosts: all
+  roles:
+    - role: redis
+      redis_travis_ci: true
+    - role: postgresql
+      postgresql_databases:
+        - name: pacifica_ingest
+          owner: pacifica
+      postgresql_users:
+        - name: pacifica
+          pass: password
+          encrypted: false
+    - role: pacifica
+      pacifica_ingest_config: &pacifica_ingest_config
+        celery:
+          broker_url: redis://127.0.0.1:6379/0
+        database:
+          peewee_url: postgres://pacifica:password@127.0.0.1:5432/pacifica_ingest
+      pacifica_available_services:
+        ingest_backend:
+          ini_config: *pacifica_ingest_config
+        ingest_frontend:
+          ini_config: *pacifica_ingest_config
+      pacifica_enabled_services:
+        - ingest_frontend
+        - ingest_backend

@@ -1,0 +1,13 @@
+[Unit]
+Description=Starts and manages the Pacifica based {{ service }} service
+After=network.target
+
+[Service]
+ExecStart={{ value.virtualenv_path|default('/opt') }}/{{ value.virtualenv|default('default') }}/{{ service }}
+ExecReload=/bin/kill -HUP $MAINPID
+KillSignal=TERM
+Restart=on-failure
+SyslogIdentifier={{ service }}
+
+[Install]
+WantedBy=multi-user.target
