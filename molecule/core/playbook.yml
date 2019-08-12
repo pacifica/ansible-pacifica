@@ -6,6 +6,7 @@
       es_instance_name: pacifica
       es_enable_xpack: false
     - role: postgresql
+      postgresql_version: 9.6
       postgresql_databases:
         - name: pacifica_metadata
           owner: pacifica

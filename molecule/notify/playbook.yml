@@ -5,6 +5,7 @@
     - role: redis
       redis_travis_ci: true
     - role: postgresql
+      postgresql_version: 9.6
       postgresql_databases:
         - name: pacifica_notify
           owner: pacifica

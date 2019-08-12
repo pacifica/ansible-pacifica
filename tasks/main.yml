@@ -156,8 +156,6 @@
       {{ services.get(item).vars.virtualenv_path|default('/opt') }}/{{
       services.get(item).vars.virtualenv|default('default') }}/{{
       item }}
-    owner: root
-    group: root
     mode: 0750
   notify:
     - "Pacifica: Restart uWSGI Service"
@@ -182,6 +180,7 @@
   tags:
     - pacifica
     - pacifica_python
+  become: true
 
 - name: "Pacifica: Started uWSGI Service"
   retries: 3
@@ -192,3 +191,4 @@
     name: "{{ item }}"
     state: started
   loop: "{{ pacifica_enabled_services }}"
+  become: true
