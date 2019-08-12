@@ -9,6 +9,7 @@
     daemon_reload: true
     state: restarted
   loop: "{{ pacifica_enabled_services }}"
+  become: true
 
 - name: "Pacifica: Reload uWSGI Service"
   retries: 3
@@ -20,3 +21,4 @@
     daemon_reload: true
     state: reloaded
   loop: "{{ pacifica_enabled_services }}"
+  become: true
