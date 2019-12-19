@@ -88,7 +88,7 @@
   pip:
     chdir: "{{ services.get(item).vars.virtualenv_path|default('/opt') }}"
     virtualenv: "{{ services.get(item).vars.virtualenv|default('default') }}"
-    virtualenv_python: "{{ services.get(item).vars.virtualenv_python|default('python') }}"
+    virtualenv_python: "{{ services.get(item).vars.virtualenv_python|default('python3.6') }}"
     name: "{{ services.get(item).vars.aux_pkg|default(default_aux_pkg) }}"
     state: "{{ services.get(item).vars.aux_pkg_state|default('latest') }}"
   loop: "{{ pacifica_enabled_services }}"
@@ -100,7 +100,7 @@
   pip:
     chdir: "{{ services.get(item).vars.virtualenv_path|default('/opt') }}"
     virtualenv: "{{ services.get(item).vars.virtualenv|default('default') }}"
-    virtualenv_python: "{{ services.get(item).vars.virtualenv_python|default('python2.7') }}"
+    virtualenv_python: "{{ services.get(item).vars.virtualenv_python|default('python3.6') }}"
     name: "pacifica-{{ services.get(item).vars.pacifica_module }}{{ services.get(item).vars.version|default('') }}"
     state: "{{ services.get(item).vars.pacifica_module_state|default('latest') }}"
   notify:
