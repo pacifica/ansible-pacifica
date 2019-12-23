@@ -1,8 +1,10 @@
 ---
 __setup_packages:
   - build-essential
+  - python-setuptools
 __python_packages:
   - python3
   - python3-pip
   - python3-setuptools
-  - python36-virtualenv
+  - python3-venv
+__python_virtualenv_command: pyvenv-3.6
