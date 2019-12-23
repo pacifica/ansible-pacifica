@@ -13,7 +13,7 @@
         - name: pacifica
           pass: password
           encrypted: false
-    - role: pacifica
+    - role: ansible-pacifica
       pacifica_ingest_config: &pacifica_ingest_config
         celery:
           broker_url: redis://127.0.0.1:6379/0
