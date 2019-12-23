@@ -8,7 +8,7 @@ __setup_packages:
   - glibc-devel
   - kernel-devel
 __python_packages:
-  - python
-  - python2-pip
-  - python-setuptools
-  - python-virtualenv
+  - python3
+  - python3-pip
+  - python3-setuptools
+  - python36-virtualenv
