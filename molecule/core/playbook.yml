@@ -16,7 +16,7 @@
         - name: pacifica
           pass: metadata
           encrypted: false
-    - role: pacifica
+    - role: ansible-pacifica
       pacifica_enabled_services:
         - metadata
         - policy
