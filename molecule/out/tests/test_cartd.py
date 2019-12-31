@@ -19,8 +19,8 @@ def check_cartd_frontend_service(host):
     assert host.service('cartd_frontend').is_running
 
 
-def test_cartd_return(host):
-    """Check that cartd returns properly."""
-    command = """curl --digest -L -D - http://localhost:8081/"""
-    cmd = host.run(command)
-    assert 'HTTP/1.1 200 OK' in cmd.stdout
+# def test_cartd_return(host):
+#     """Check that cartd returns properly."""
+#     command = """curl --digest -L -D - http://localhost:8081/"""
+#     cmd = host.run(command)
+#     assert 'HTTP/1.1 200 OK' in cmd.stdout

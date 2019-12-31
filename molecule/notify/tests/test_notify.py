@@ -19,8 +19,8 @@ def check_notify_frontend_service(host):
     assert host.service('ingest_frontend').is_running
 
 
-def test_notifications_return(host):
-    """Check that notifications returns properly."""
-    command = """curl --digest -L -D - http://localhost:8070/"""
-    cmd = host.run(command)
-    assert 'HTTP/1.1 200 OK' in cmd.stdout
+# def test_notifications_return(host):
+#     """Check that notifications returns properly."""
+#     command = """curl --digest -L -D - http://localhost:8070/"""
+#     cmd = host.run(command)
+#     assert 'HTTP/1.1 200 OK' in cmd.stdout

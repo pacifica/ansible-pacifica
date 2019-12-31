@@ -19,8 +19,8 @@ def check_ingest_frontend_service(host):
     assert host.service('ingest_frontend').is_running
 
 
-def test_ingest_return(host):
-    """Check that ingest returns properly."""
-    command = """curl --digest -L -D - http://localhost:8066/"""
-    cmd = host.run(command)
-    assert 'HTTP/1.1 200 OK' in cmd.stdout
+# def test_ingest_return(host):
+#     """Check that ingest returns properly."""
+#     command = """curl --digest -L -D - http://localhost:8066/"""
+#     cmd = host.run(command)
+#     assert 'HTTP/1.1 200 OK' in cmd.stdout
