@@ -3,14 +3,14 @@
 """Testing module for archiveinterface to verify working."""
 
 
-def test_archiveinterface(host):
-    """Test the archiveinterface default port."""
+def test_archiveinterface_socket(host):
+    """Test the archiveinterface default socket."""
     sock = host.socket('tcp://0.0.0.0:8080')
     assert sock
 
 
-def test_archiveinterface_script(host):
-    """Test the pacifica virtual env is there."""
+def test_archiveinterface_configs(host):
+    """Test archiveinterface configs are present."""
     test_files = [
         '/opt/default/archiveinterface.ini',
         '/opt/default/archiveinterface-cp.ini',
