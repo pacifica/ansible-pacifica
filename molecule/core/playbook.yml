@@ -2,10 +2,8 @@
 - name: Converge
   hosts: all
   roles:
-    - role: elasticsearch
-      es_instance_name: pacifica
-      es_enable_xpack: false
     - role: postgresql
+      postgresql_ext_install_dev_headers: true
       postgresql_version: 9.6
       postgresql_databases:
         - name: pacifica_metadata
@@ -17,6 +15,8 @@
           pass: metadata
           encrypted: false
     - role: ansible-pacifica
+      environment:
+        PATH: /usr/pgsql-9.6/bin:{{ ansible_env.PATH }}
       pacifica_enabled_services:
         - metadata
         - policy

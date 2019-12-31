@@ -5,20 +5,21 @@
     - role: redis
       redis_travis_ci: true
     - role: postgresql
+      postgresql_ext_install_dev_headers: true
       postgresql_version: 9.6
       postgresql_databases:
         - name: pacifica_cartd
           owner: pacifica
       postgresql_users:
         - name: pacifica
-          pass: password
+          pass: pacifica
           encrypted: false
     - role: ansible-pacifica
       pacifica_cartd_config: &pacifica_cartd_config
         celery:
           broker_url: redis://127.0.0.1:6379/0
         database:
-          peewee_url: postgres://pacifica:password@127.0.0.1:5432/pacifica_cartd
+          peewee_url: postgres://pacifica:pacifica@127.0.0.1:5432/pacifica_cartd
       pacifica_available_services:
         cartd_backend:
           ini_config: *pacifica_cartd_config
