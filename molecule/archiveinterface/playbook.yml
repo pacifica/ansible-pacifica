@@ -1,6 +1,11 @@
 ---
 - name: Converge
   hosts: all
+  pre_tasks:
+    - name: install curl
+      package:
+        name: curl
+        state: present
   roles:
     - role: ansible-pacifica
       pacifica_enabled_services:

@@ -20,3 +20,15 @@ def test_archiveinterface_configs(host):
     for test_file in test_files:
         run_file = host.file(test_file)
         assert run_file.exists
+
+
+def check_archiveinterface_service(host):
+    """Check that the archiveinterface service is running on the host."""
+    assert host.service('archiveinterface').is_running
+
+
+def test_archiveinterface_return(host):
+    """Check that the archiveinterface returns properly."""
+    command = """curl --digest -L -D - http://localhost:8080/"""
+    cmd = host.run(command)
+    assert 'HTTP/1.1 200 OK' in cmd.stdout

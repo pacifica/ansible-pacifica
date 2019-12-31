@@ -10,5 +10,12 @@ def test_metadata_socket(host):
 
 
 def check_metadata_service(host):
-    """Check that the metadata service is running on the host"""
+    """Check that the metadata service is running on the host."""
     assert host.service('metadata').is_running
+
+
+def test_metadata_return(host):
+    """Check that metadata returns properly."""
+    command = """curl --digest -L -D - http://localhost:8121/"""
+    cmd = host.run(command)
+    assert 'HTTP/1.1 200 OK' in cmd.stdout

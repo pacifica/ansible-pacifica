@@ -10,5 +10,5 @@ def test_postgresql_socket(host):
 
 
 def check_postgresql_service(host):
-    """Check that the postgresql service is running on the host"""
+    """Check that the postgresql service is running on the host."""
     assert host.service('postgresql').is_running

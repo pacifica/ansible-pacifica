@@ -12,6 +12,14 @@ services do depend on other services depending on configuration. So, please
 be aware if you configure a service to use PostgreSQL you should configure
 PostgreSQL prior to including this role as part of your deployment.
 
+Supported Platforms
+-------------------
+
+| os           | tested             |
+|--------------|--------------------|
+| Ubuntu 18.04 | :heavy_check_mark: |
+| CentOS 7     | :heavy_check_mark: |
+
 Role Variables
 --------------
 
@@ -44,7 +52,7 @@ There are currently no dependencies for this role. However, if you configure a
 Pacifica service to use a MySQL or PostgreSQL database to store its state then
 you are responsible for making sure that MySQL or PostgreSQL service is deployed
 and configured somewhere in your infrastructure. This includes other optional
-dependencies like ElasticSearch.
+dependencies like ElasticSearch or Redis.
 
 Example Playbook
 ----------------
