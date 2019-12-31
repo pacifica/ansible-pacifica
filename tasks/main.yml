@@ -189,7 +189,7 @@
 
 - name: Deploy module service start script(s)
   register: restart
-  no_log: "{{ enable_no_log|default(True) }}"
+  no_log: "{{ enable_no_log|default(true) }}"
   vars:
     service: "{{ item }}"
     value: "{{ services.get(item).vars }}"
