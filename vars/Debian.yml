@@ -7,4 +7,5 @@ __python_packages:
   - python3-pip
   - python3-setuptools
   - python3-venv
-__python_virtualenv_command: pyvenv-3.6
+  - python3-virtualenv
+__python_virtualenv_command: "/usr/bin/python3 -m virtualenv --python=/usr/bin/python3"
