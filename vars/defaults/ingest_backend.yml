@@ -3,5 +3,5 @@ pacifica_module: ingest
 celery: true
 no_db: true
 env_vars:
-  INGEST_CONFIG: "/opt/default/ingest.ini"
-  INGEST_CPCONFIG: "/opt/default/ingest-cp.ini"
+  INGEST_CONFIG: "/opt/default/ingest_backend.ini"
+  INGEST_CPCONFIG: "/opt/default/ingest_backend-cp.ini"
