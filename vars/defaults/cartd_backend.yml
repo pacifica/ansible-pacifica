@@ -3,5 +3,5 @@ pacifica_module: cartd
 celery: true
 no_db: true
 env_vars:
-  CARTD_CONFIG: "/opt/default/cartd.ini"
-  CARTD_CPCONFIG: "/opt/default/cartd-cp.ini"
+  CARTD_CONFIG: "/opt/default/cartd_backend.ini"
+  CARTD_CPCONFIG: "/opt/default/cartd_backend-cp.ini"

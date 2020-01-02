@@ -2,5 +2,5 @@
 pacifica_module: cartd
 socket_port: "8081"
 env_vars:
-  CARTD_CONFIG: "/opt/default/cartd.ini"
-  CARTD_CPCONFIG: "/opt/default/cartd-cp.ini"
+  CARTD_CONFIG: "/opt/default/cartd_frontend.ini"
+  CARTD_CPCONFIG: "/opt/default/cartd_frontend-cp.ini"
