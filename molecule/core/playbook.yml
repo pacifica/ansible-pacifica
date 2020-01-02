@@ -1,11 +1,14 @@
 ---
 - name: Converge
   hosts: all
+  pre_tasks:
+    - name: install curl
+      package:
+        name: curl
+        state: present
   roles:
-    - role: elasticsearch
-      es_instance_name: pacifica
-      es_enable_xpack: false
     - role: postgresql
+      postgresql_ext_install_dev_headers: true
       postgresql_version: 9.6
       postgresql_databases:
         - name: pacifica_metadata
@@ -16,7 +19,9 @@
         - name: pacifica
           pass: metadata
           encrypted: false
-    - role: pacifica
+    - role: ansible-pacifica
+      environment:
+        PATH: /usr/pgsql-9.6/bin:{{ ansible_env.PATH }}
       pacifica_enabled_services:
         - metadata
         - policy

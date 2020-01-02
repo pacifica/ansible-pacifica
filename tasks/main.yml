@@ -27,6 +27,11 @@
     python_packages: "{{ __python_packages | list }}"
   when: python_packages is not defined
 
+- name: Set Python virtualenv Command
+  set_fact:
+    python_virtualenv_command: "{{ __python_virtualenv_command }}"
+  when: python_virtualenv_command is not defined
+
 - name: Install Setup Packages
   package:
     name: "{{ setup_packages }}"
@@ -78,7 +83,7 @@
     - pacifica
     - pacifica_python
 
-- name: Install auxillary packages
+- name: RedHat - Install auxillary packages
   vars:
     default_aux_pkg:
       - uwsgi
@@ -86,26 +91,64 @@
       - redis
       - amqp
   pip:
+    name: "{{ services.get(item).vars.aux_pkg|default(default_aux_pkg) }}"
     chdir: "{{ services.get(item).vars.virtualenv_path|default('/opt') }}"
     virtualenv: "{{ services.get(item).vars.virtualenv|default('default') }}"
-    virtualenv_python: "{{ services.get(item).vars.virtualenv_python|default('python') }}"
-    name: "{{ services.get(item).vars.aux_pkg|default(default_aux_pkg) }}"
+    virtualenv_python: "{{ services.get(item).vars.virtualenv_python|default('python3.6') }}"
+    virtualenv_command: "{{ services.get(item).vars.virtualenv_command|default(python_virtualenv_command) }}"
     state: "{{ services.get(item).vars.aux_pkg_state|default('latest') }}"
   loop: "{{ pacifica_enabled_services }}"
+  when: ansible_facts['os_family'] == 'RedHat'
   tags:
     - pacifica
     - pacifica_python
 
-- name: Install module packages
+- name: Debian - Install auxillary packages
+  vars:
+    default_aux_pkg:
+      - uwsgi
+      - pip
+      - redis
+      - amqp
   pip:
+    name: "{{ services.get(item).vars.aux_pkg|default(default_aux_pkg) }}"
     chdir: "{{ services.get(item).vars.virtualenv_path|default('/opt') }}"
     virtualenv: "{{ services.get(item).vars.virtualenv|default('default') }}"
-    virtualenv_python: "{{ services.get(item).vars.virtualenv_python|default('python2.7') }}"
+    virtualenv_command: "{{ services.get(item).vars.virtualenv_command|default(python_virtualenv_command) }}"
+    state: "{{ services.get(item).vars.aux_pkg_state|default('latest') }}"
+  loop: "{{ pacifica_enabled_services }}"
+  when: ansible_facts['os_family'] == 'Debian'
+  tags:
+    - pacifica
+    - pacifica_python
+
+- name: RedHat - Install module packages
+  pip:
     name: "pacifica-{{ services.get(item).vars.pacifica_module }}{{ services.get(item).vars.version|default('') }}"
+    chdir: "{{ services.get(item).vars.virtualenv_path|default('/opt') }}"
+    virtualenv: "{{ services.get(item).vars.virtualenv|default('default') }}"
+    virtualenv_python: "{{ services.get(item).vars.virtualenv_python|default('python3.6') }}"
+    virtualenv_command: "{{ services.get(item).vars.virtualenv_command|default(python_virtualenv_command) }}"
     state: "{{ services.get(item).vars.pacifica_module_state|default('latest') }}"
   notify:
     - "Pacifica: Reload uWSGI Service"
   loop: "{{ pacifica_enabled_services }}"
+  when: ansible_facts['os_family'] == 'RedHat'
+  tags:
+    - pacifica
+    - pacifica_python
+
+- name: Debian - Install module packages
+  pip:
+    name: "pacifica-{{ services.get(item).vars.pacifica_module }}{{ services.get(item).vars.version|default('') }}"
+    chdir: "{{ services.get(item).vars.virtualenv_path|default('/opt') }}"
+    virtualenv: "{{ services.get(item).vars.virtualenv|default('default') }}"
+    virtualenv_command: "{{ services.get(item).vars.virtualenv_command|default(python_virtualenv_command) }}"
+    state: "{{ services.get(item).vars.pacifica_module_state|default('latest') }}"
+  notify:
+    - "Pacifica: Reload uWSGI Service"
+  loop: "{{ pacifica_enabled_services }}"
+  when: ansible_facts['os_family'] == 'Debian'
   tags:
     - pacifica
     - pacifica_python
@@ -146,7 +189,7 @@
 
 - name: Deploy module service start script(s)
   register: restart
-  no_log: "{{ enable_no_log|default(True) }}"
+  no_log: "{{ enable_no_log|default(true) }}"
   vars:
     service: "{{ item }}"
     value: "{{ services.get(item).vars }}"

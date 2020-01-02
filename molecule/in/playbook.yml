@@ -1,24 +1,30 @@
 ---
 - name: Converge
   hosts: all
+  pre_tasks:
+    - name: install curl
+      package:
+        name: curl
+        state: present
   roles:
     - role: redis
       redis_travis_ci: true
     - role: postgresql
+      postgresql_ext_install_dev_headers: true
       postgresql_version: 9.6
       postgresql_databases:
         - name: pacifica_ingest
           owner: pacifica
       postgresql_users:
         - name: pacifica
-          pass: password
+          pass: pacifica
           encrypted: false
-    - role: pacifica
+    - role: ansible-pacifica
       pacifica_ingest_config: &pacifica_ingest_config
         celery:
           broker_url: redis://127.0.0.1:6379/0
         database:
-          peewee_url: postgres://pacifica:password@127.0.0.1:5432/pacifica_ingest
+          peewee_url: postgres://pacifica:pacifica@127.0.0.1:5432/pacifica_ingest
       pacifica_available_services:
         ingest_backend:
           ini_config: *pacifica_ingest_config

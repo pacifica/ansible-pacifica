@@ -1,9 +1,4 @@
 ---
-# Elasticsearch
-- name: elasticsearch
-  src: elastic.elasticsearch
-  version: 6.6.0
-
 # PostgreSQL
 - name: postgresql
   src: ANXS.postgresql

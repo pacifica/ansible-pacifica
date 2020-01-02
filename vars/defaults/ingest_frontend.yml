@@ -2,5 +2,5 @@
 pacifica_module: ingest
 socket_port: "8066"
 env_vars:
-  INGEST_CONFIG: "/opt/default/ingest.ini"
-  INGEST_CPCONFIG: "/opt/default/ingest-cp.ini"
+  INGEST_CONFIG: "/opt/default/ingest_frontend.ini"
+  INGEST_CPCONFIG: "/opt/default/ingest_frontend-cp.ini"

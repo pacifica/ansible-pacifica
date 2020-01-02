@@ -7,8 +7,10 @@ __setup_packages:
   - make
   - glibc-devel
   - kernel-devel
-__python_packages:
-  - python
-  - python2-pip
   - python-setuptools
-  - python-virtualenv
+__python_packages:
+  - python3
+  - python3-pip
+  - python3-setuptools
+  - python36-virtualenv
+__python_virtualenv_command: virtualenv-3.6
