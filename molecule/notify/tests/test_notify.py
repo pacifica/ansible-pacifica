@@ -23,4 +23,4 @@ def test_notifications_return(host):
     """Check that notifications returns properly."""
     command = """curl --digest -L -D - http://localhost:8070/"""
     cmd = host.run(command)
-    assert 'HTTP/1.1 200 OK' in cmd.stdout
+    assert 'HTTP/1.1 405 Method Not Allowed' in cmd.stdout
