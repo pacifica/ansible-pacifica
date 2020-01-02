@@ -12,5 +12,5 @@ env:
   - SCENERIO=in
   - SCENERIO=notify
   - SCENERIO=out
-install: pip install ansible molecule==2.22 docker-py pre-commit pylint pep257
+install: pip install ansible molecule docker-py pre-commit pylint pep257
 script: molecule test -s $SCENERIO
