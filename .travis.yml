@@ -1,5 +1,7 @@
 ---
-dist: xenial
+dist: bionic
+os: linux
+arch: arm64
 sudo: required
 group: edge
 services: docker
