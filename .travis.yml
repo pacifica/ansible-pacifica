@@ -1,12 +1,10 @@
 ---
 dist: bionic
-os: linux
-arch: arm64
 sudo: required
 group: edge
 services: docker
 language: python
-python: 3.6
+python: 3.8
 env:
   - SCENERIO=archiveinterface
   - SCENERIO=core
@@ -15,4 +13,4 @@ env:
   - SCENERIO=notify
   - SCENERIO=out
 install: pip install ansible molecule docker-py pre-commit pylint pep257
-script: molecule test -s $SCENERIO
+script: travis_wait 30 molecule test -s $SCENERIO
