@@ -13,4 +13,4 @@ env:
   - SCENERIO=notify
   - SCENERIO=out
 install: pip install ansible molecule docker-py pre-commit pylint pep257
-script: travis_wait 30 molecule test -s $SCENERIO
+script: travis_wait 60 molecule test -s $SCENERIO
