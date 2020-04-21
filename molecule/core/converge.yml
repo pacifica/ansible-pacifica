@@ -6,10 +6,18 @@
       package:
         name: curl
         state: present
+    - name: Install development
+      package:
+        name:
+          - gcc
+          - glibc-devel
+          - make
+      when: "ansible_os_family == 'RedHat'"
   roles:
     - role: postgresql
       postgresql_ext_install_dev_headers: true
-      postgresql_version: 9.6
+      postgresql_apt_dependencies: ["python3-psycopg2", "locales"]
+      postgresql_version: 10
       postgresql_databases:
         - name: pacifica_metadata
           owner: pacifica
@@ -18,10 +26,9 @@
       postgresql_users:
         - name: pacifica
           pass: metadata
-          encrypted: false
-    - role: ansible-pacifica
+    - role: pacifica.ansible_pacifica
       environment:
-        PATH: /usr/pgsql-9.6/bin:{{ ansible_env.PATH }}
+        PATH: /usr/pgsql-10/bin:{{ ansible_env.PATH }}
       pacifica_enabled_services:
         - metadata
         - policy

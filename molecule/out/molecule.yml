@@ -3,8 +3,7 @@ dependency:
   name: galaxy
 driver:
   name: docker
-lint:
-  name: yamllint
+lint: yamllint . && ansible-lint
 platforms:
   - name: centos
     image: centos:7
@@ -24,6 +23,7 @@ platforms:
     command: /usr/lib/systemd/systemd
   - name: ubuntu
     image: ubuntu:18.04
+    dockerfile: ../ubuntu/Dockerfile.j2
     privileged: true
     capabilities:
       - SYS_ADMIN
@@ -32,10 +32,6 @@ platforms:
     command: /lib/systemd/systemd
 provisioner:
   name: ansible
-  lint:
-    name: ansible-lint
-scenario:
-  name: out
 verifier:
   name: testinfra
   lint:

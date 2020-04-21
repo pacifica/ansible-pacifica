@@ -7,4 +7,6 @@
         name: curl
         state: present
   roles:
-    - role: ansible-pacifica
+    - role: pacifica.ansible_pacifica
+      pacifica_enabled_services:
+        - archiveinterface

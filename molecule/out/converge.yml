@@ -6,20 +6,27 @@
       package:
         name: curl
         state: present
+    - name: Install development
+      package:
+        name:
+          - gcc
+          - glibc-devel
+          - make
+      when: "ansible_os_family == 'RedHat'"
   roles:
     - role: redis
       redis_travis_ci: true
     - role: postgresql
       postgresql_ext_install_dev_headers: true
-      postgresql_version: 9.6
+      postgresql_apt_dependencies: ["python3-psycopg2", "locales"]
+      postgresql_version: 10
       postgresql_databases:
         - name: pacifica_cartd
           owner: pacifica
       postgresql_users:
         - name: pacifica
           pass: pacifica
-          encrypted: false
-    - role: ansible-pacifica
+    - role: pacifica.ansible_pacifica
       pacifica_cartd_config: &pacifica_cartd_config
         celery:
           broker_url: redis://127.0.0.1:6379/0
