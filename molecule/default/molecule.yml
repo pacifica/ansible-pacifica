@@ -5,7 +5,7 @@ driver:
   name: docker
 lint: yamllint . && ansible-lint
 platforms:
-  - name: centos
+  - name: centos7
     image: centos:7
     privileged: true
     capabilities:
@@ -13,7 +13,7 @@ platforms:
     volumes:
       - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
     command: /usr/lib/systemd/systemd
-  - name: centos
+  - name: centos8
     image: centos:8
     privileged: true
     capabilities:
