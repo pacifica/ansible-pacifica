@@ -12,5 +12,9 @@ env:
   - SCENERIO=in
   - SCENERIO=notify
   - SCENERIO=out
-install: pip install ansible molecule docker-py pre-commit pylint pep257
-script: travis_wait 60 molecule test -s $SCENERIO
+install: pip install ansible molecule docker-py pre-commit pylint pep257 yamllint ansible-lint pytest testinfra
+script:
+  - pushd .. && ln -s ansible-pacifica pacifica.ansible_pacifica && popd
+  - travis_wait 60 molecule test -s $SCENERIO
+notifications:
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/
