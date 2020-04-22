@@ -1,4 +1,5 @@
 ---
 # PostgreSQL
 - name: postgresql
-  src: ANXS.postgresql
+  src: git+https://github.com/kbcz1989/postgresql.git
+  version: ee7f62938727153157e25b2453455d0e5fac53e8
