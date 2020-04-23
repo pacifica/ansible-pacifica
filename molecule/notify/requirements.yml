@@ -1,7 +1,0 @@
----
-# PostgreSQL
-- name: postgresql
-  src: ANXS.postgresql
-# Redis
-- name: redis
-  src: DavidWittman.redis

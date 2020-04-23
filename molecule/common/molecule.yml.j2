@@ -1,0 +1,29 @@
+---
+dependency:
+  name: galaxy
+  options:
+    role-file: molecule/common/requirements.yml
+driver:
+  name: docker
+lint: yamllint . && ansible-lint
+platforms:
+  - name: {{ scenario }}-{{ platform }}{{ platform_version }}
+    image: {{ platform }}:{{ platform_version }}{% if platform == 'ubuntu' %}
+    dockerfile: ../ubuntu/Dockerfile.j2{% endif %}
+    privileged: true
+    capabilities:
+      - SYS_ADMIN
+    volumes:
+      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"{% if platform == 'ubuntu' %}
+    command: /lib/systemd/systemd{% else %}
+    command: /usr/lib/systemd/systemd{% endif %}
+provisioner:
+  name: ansible
+verifier:
+  name: testinfra
+  directory: ../common/{{ scenario }}_tests
+  additional_files_or_dirs:{% if scenario != 'default' %}
+    - ../common_tests/test_default.py{% else %} []{% endif %}{% if scenario == 'in' or scenario == 'out' or scenario == 'notify' %}
+    - ../common_tests/test_redis.py{% endif %}
+  lint:
+    name: pre-commit
