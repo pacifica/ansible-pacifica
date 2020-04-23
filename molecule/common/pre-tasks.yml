@@ -1,0 +1,22 @@
+---
+- name: install curl
+  package:
+    name: curl
+    state: present
+- name: Install development
+  package:
+    name:
+      - gcc
+      - glibc-devel
+      - make
+  when: "ansible_os_family == 'RedHat'"
+- name: Set PostgreSQL for RedHat 8
+  set_fact:
+    postgresql_packages:
+      - postgresql
+      - postgresql-devel
+      - postgresql-server
+      - postgresql-contrib
+  when:
+    - ansible_os_family == 'RedHat'
+    - ansible_distribution_major_version | int >= 8

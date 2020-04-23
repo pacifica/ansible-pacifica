@@ -1,16 +1,36 @@
 ---
-__setup_packages:
+__setup_common_packages:
   - epel-release
-  - centos-release-scl
-  - centos-release-scl-rh
   - gcc
   - make
   - glibc-devel
   - kernel-devel
+__setup_7_packages:
+  - centos-release-scl
+  - centos-release-scl-rh
   - python-setuptools
-__python_packages:
+__setup_8_packages:
+  - python3-setuptools
+__setup_packages: |
+  {% if (ansible_distribution_major_version|int <= 7) %}
+  {{ __setup_common_packages + __setup_7_packages }}
+  {% else %}
+  {{ __setup_common_packages + __setup_8_packages }}
+  {% endif %}
+__python_7_packages:
   - python3
   - python3-pip
   - python3-setuptools
   - python36-virtualenv
-__python_virtualenv_command: virtualenv-3.6
+__python_8_packages:
+  - python36
+  - python3-pip
+  - python3-setuptools
+  - python3-virtualenv
+__python_packages: |
+  {% if (ansible_distribution_major_version|int <= 7) %}
+  {{ __python_7_packages }}
+  {% else %}
+  {{ __python_8_packages }}
+  {% endif %}
+__python_virtualenv_command: virtualenv-3
