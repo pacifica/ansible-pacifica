@@ -1,0 +1,11 @@
+---
+- name: "Pacifica: Started uWSGI Service"
+  retries: 3
+  delay: 3
+  register: result
+  until: result.get('status', {}).get('SubState', '') == 'running'
+  systemd:
+    name: "{{ item }}"
+    state: started
+  loop: "{{ pacifica_enabled_services }}"
+  become: true

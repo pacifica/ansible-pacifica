@@ -1,0 +1,34 @@
+---
+- name: Install auxillary packages
+  vars:
+    default_aux_pkg:
+      - uwsgi
+      - pip
+      - redis
+      - amqp
+  pip:
+    name: "{{ services.get(item).vars.aux_pkg|default(default_aux_pkg) }}"
+    chdir: "{{ services.get(item).vars.virtualenv_path|default('/opt') }}"
+    virtualenv: "{{ services.get(item).vars.virtualenv|default('default') }}"
+    virtualenv_python: "{{ services.get(item).vars.virtualenv_python|default(omit) }}"
+    virtualenv_command: "{{ services.get(item).vars.virtualenv_command|default(python_virtualenv_command) }}"
+    state: "{{ services.get(item).vars.aux_pkg_state|default('latest') }}"
+  loop: "{{ pacifica_enabled_services }}"
+  tags:
+    - pacifica
+    - pacifica_python
+
+- name: Install module packages
+  pip:
+    name: "pacifica-{{ services.get(item).vars.pacifica_module }}{{ services.get(item).vars.version|default('') }}"
+    chdir: "{{ services.get(item).vars.virtualenv_path|default('/opt') }}"
+    virtualenv: "{{ services.get(item).vars.virtualenv|default('default') }}"
+    virtualenv_python: "{{ services.get(item).vars.virtualenv_python|default(omit) }}"
+    virtualenv_command: "{{ services.get(item).vars.virtualenv_command|default(python_virtualenv_command) }}"
+    state: "{{ services.get(item).vars.pacifica_module_state|default('latest') }}"
+  notify:
+    - "Pacifica: Reload uWSGI Service"
+  loop: "{{ pacifica_enabled_services }}"
+  tags:
+    - pacifica
+    - pacifica_python

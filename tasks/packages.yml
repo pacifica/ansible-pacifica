@@ -1,0 +1,20 @@
+---
+- name: Install Setup Packages
+  package:
+    name: "{{ setup_packages }}"
+    state: present
+  async: "{{ pacifica_package_timeout }}"
+  tags:
+    - pacifica
+    - pacifica_python
+  when: external_python is undefined
+
+- name: Install Python Packages
+  package:
+    name: "{{ python_packages }}"
+    state: present
+  async: "{{ pacifica_package_timeout }}"
+  tags:
+    - pacifica
+    - pacifica_python
+  when: external_python is undefined
