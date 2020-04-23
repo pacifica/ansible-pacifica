@@ -1,0 +1,116 @@
+---
+{{ warning_msg }}
+- name: Converge
+  hosts: all
+  vars:
+    __common_python: &__common_python
+      aux_pkg:
+        - uwsgi
+        - pip
+        - redis
+        - amqp
+        - psycopg2
+    __notify_config: &__notify_config
+      <<: *__common_python
+      ini_config:
+        celery:
+          broker_url: redis://127.0.0.1:6379/0
+        database:
+          peewee_url: postgres://pacifica:pacifica@127.0.0.1:5432/pacifica_notify
+    __cartd_config: &__cartd_config
+      <<: *__common_python
+      env_vars:
+        VOLUME_PATH: /srv/cartdata
+        CARTD_CONFIG: /opt/default/cartd_frontend.ini
+        CARTD_CPCONFIG: /opt/default/cartd_frontend-cp.ini
+      ini_config:
+        database:
+          peewee_url: postgres://pacifica:pacifica@127.0.0.1:5432/pacifica_cartd
+        celery:
+          broker_url: redis://127.0.0.1:6379/1
+    __ingest_config: &__ingest_config
+      <<: *__common_python
+      env_vars:
+        VOLUME_PATH: /srv/ingestdata
+        INGEST_CONFIG: /opt/default/ingest_frontend.ini
+        INGEST_CPCONFIG: /opt/default/ingest_frontend-cp.ini
+      ini_config:
+        database:
+          peewee_url: postgres://pacifica:pacifica@127.0.0.1:5432/pacifica_ingest
+        celery:
+          broker_url: redis://127.0.0.1:6379/2
+    pacifica_available_services:
+      archiveinterface:
+        <<: *__common_python
+        processes: 4
+        env_vars:
+          PAI_PREFIX: /srv/archivedata
+          ARCHIVEINTERFACE_CONFIG: "/opt/default/archiveinterface.ini"
+          ARCHIVEINTERFACE_CPCONFIG: "/opt/default/archiveinterface-cp.ini"
+      metadata:
+        <<: *__common_python
+        ini_config:
+          database:
+            peewee_url: postgres://pacifica:pacifica@127.0.0.1:5432/pacifica_metadata
+      proxy:
+        <<: *__common_python
+      policy:
+        <<: *__common_python
+      uniqueid:
+        <<: *__common_python
+        ini_config:
+          database:
+            peewee_url: postgres://pacifica:pacifica@127.0.0.1:5432/pacifica_uniqueid
+      notify_backend: *__notify_config
+      notify_frontend: *__notify_config
+      ingest_backend: *__ingest_config
+      ingest_frontend: *__ingest_config
+      cartd_backend: *__cartd_config
+      cartd_frontend: *__cartd_config
+    postgresql_ext_install_dev_headers: true
+    postgresql_apt_dependencies: ["python3-psycopg2", "locales"]
+    postgresql_version: 10
+    postgresql_databases:
+      - name: pacifica_metadata
+        owner: pacifica
+      - name: pacifica_uniqueid
+        owner: pacifica
+      - name: pacifica_ingest
+        owner: pacifica
+      - name: pacifica_cartd
+        owner: pacifica
+      - name: pacifica_notify
+        owner: pacifica
+    postgresql_users:
+      - name: pacifica
+        pass: pacifica
+        password: pacifica
+  pre_tasks:
+    - include_tasks: ../common/pre-tasks.yml
+  roles:
+    - role: rh7.postgresql
+      when: |
+        (
+          ansible_os_family == 'RedHat' and
+          ansible_distribution_major_version | int < 8
+        ) or
+        ansible_os_family == 'Debian'
+    - role: rh8.postgresql
+      when:
+        - ansible_os_family == 'RedHat'
+        - ansible_distribution_major_version | int >= 8
+    - role: pacifica.ansible_pacifica
+      environment:
+        PATH: /usr/pgsql-10/bin:{% raw %}{{ ansible_env.PATH }}{% endraw %}
+      pacifica_enabled_services:
+        - metadata
+        - policy
+        - proxy
+        - uniqueid
+        - archiveinterface
+        - cartd_frontend
+        - cartd_backend
+        - ingest_frontend
+        - ingest_backend
+        - notify_frontend
+        - notify_backend

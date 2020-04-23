@@ -6,6 +6,12 @@ services: docker
 language: python
 python: 3.8
 env:
+  - SCENARIO=allinone-centos7
+  - SCENARIO=allinone-centos8
+  - SCENARIO=allinone-ubuntu18.04
+  - SCENARIO=twoinone-centos7
+  - SCENARIO=twoinone-centos8
+  - SCENARIO=twoinone-ubuntu18.04
   - SCENARIO=archiveinterface-centos7
   - SCENARIO=archiveinterface-centos8
   - SCENARIO=archiveinterface-ubuntu18.04

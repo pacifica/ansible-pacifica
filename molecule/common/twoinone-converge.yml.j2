@@ -1,0 +1,91 @@
+---
+{{ warning_msg }}
+- name: Converge
+  hosts: all
+  vars:
+    __common_python: &__common_python
+      aux_pkg:
+        - uwsgi
+        - pip
+        - redis
+        - amqp
+        - psycopg2
+    __cartd_1_config: &__cartd_1_config
+      <<: *__common_python
+      pacifica_module: cartd
+      socket_port: "8081"
+      env_vars:
+        VOLUME_PATH: /srv/cartdata1
+        CARTD_CONFIG: /opt/default/cartd_1_frontend.ini
+        CARTD_CPCONFIG: /opt/default/cartd_1_frontend-cp.ini
+      ini_config:
+        database:
+          peewee_url: postgres://pacifica:pacifica@127.0.0.1:5432/pacifica_cartd1
+        celery:
+          broker_url: redis://127.0.0.1:6379/1
+    __cartd_2_config: &__cartd_2_config
+      <<: *__common_python
+      pacifica_module: cartd
+      socket_port: "8082"
+      env_vars:
+        VOLUME_PATH: /srv/cartdata2
+        CARTD_CONFIG: /opt/default/cartd_2_frontend.ini
+        CARTD_CPCONFIG: /opt/default/cartd_2_frontend-cp.ini
+      ini_config:
+        database:
+          peewee_url: postgres://pacifica:pacifica@127.0.0.1:5432/pacifica_cartd2
+        celery:
+          broker_url: redis://127.0.0.1:6379/2
+    pacifica_available_services:
+      archiveinterface:
+        <<: *__common_python
+        processes: 4
+        env_vars:
+          PAI_PREFIX: /srv/archivedata
+          ARCHIVEINTERFACE_CONFIG: "/opt/default/archiveinterface.ini"
+          ARCHIVEINTERFACE_CPCONFIG: "/opt/default/archiveinterface-cp.ini"
+      cartd_1_backend:
+        <<: *__cartd_1_config
+        celery: true
+        no_db: true
+      cartd_1_frontend: *__cartd_1_config
+      cartd_2_backend:
+        <<: *__cartd_2_config
+        celery: true
+        no_db: true
+      cartd_2_frontend: *__cartd_2_config
+    postgresql_ext_install_dev_headers: true
+    postgresql_apt_dependencies: ["python3-psycopg2", "locales"]
+    postgresql_version: 10
+    postgresql_databases:
+      - name: pacifica_cartd1
+        owner: pacifica
+      - name: pacifica_cartd2
+        owner: pacifica
+    postgresql_users:
+      - name: pacifica
+        pass: pacifica
+        password: pacifica
+  pre_tasks:
+    - include_tasks: ../common/pre-tasks.yml
+  roles:
+    - role: rh7.postgresql
+      when: |
+        (
+          ansible_os_family == 'RedHat' and
+          ansible_distribution_major_version | int < 8
+        ) or
+        ansible_os_family == 'Debian'
+    - role: rh8.postgresql
+      when:
+        - ansible_os_family == 'RedHat'
+        - ansible_distribution_major_version | int >= 8
+    - role: pacifica.ansible_pacifica
+      environment:
+        PATH: /usr/pgsql-10/bin:{% raw %}{{ ansible_env.PATH }}{% endraw %}
+      pacifica_enabled_services:
+        - archiveinterface
+        - cartd_1_frontend
+        - cartd_1_backend
+        - cartd_2_frontend
+        - cartd_2_backend

@@ -28,7 +28,9 @@ def main():
         'default',
         'in',
         'notify',
-        'out'
+        'out',
+        'allinone',
+        'twoinone'
     ]
     for scenario in scenario_list:
         molecule_tmplt = Template(open(os.path.join(molecule_dir, 'common', 'molecule.yml.j2'.format(scenario))).read())

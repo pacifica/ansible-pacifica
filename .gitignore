@@ -104,6 +104,6 @@ venv.bak/
 .mypy_cache/
 
 molecule/*
-!molecule/common/*
+!molecule/common/
 !molecule/gen-scenarios.py
-!molecule/ubuntu/*
+!molecule/ubuntu/
