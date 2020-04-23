@@ -1,0 +1,44 @@
+---
+- name: Converge
+  hosts: all
+  pre_tasks:
+    - name: install curl
+      package:
+        name: curl
+        state: present
+    - name: Install development
+      package:
+        name:
+          - gcc
+          - glibc-devel
+          - make
+      when: "ansible_os_family == 'RedHat'"
+  roles:
+    - role: redis
+      redis_travis_ci: true
+    - role: postgresql
+      postgresql_ext_install_dev_headers: true
+      postgresql_apt_dependencies: ["python3-psycopg2", "locales"]
+      postgresql_version: 10
+      postgresql_databases:
+        - name: pacifica_notify
+          owner: pacifica
+      postgresql_users:
+        - name: pacifica
+          pass: pacifica
+    - role: pacifica.ansible_pacifica
+      environment:
+        PATH: /usr/pgsql-10/bin:{{ ansible_env.PATH }}
+      pacifica_notify_config: &pacifica_notify_config
+        celery:
+          broker_url: redis://127.0.0.1:6379/0
+        database:
+          peewee_url: postgres://pacifica:pacifica@127.0.0.1:5432/pacifica_notify
+      pacifica_available_services:
+        notify_backend:
+          ini_config: *pacifica_notify_config
+        notify_frontend:
+          ini_config: *pacifica_notify_config
+      pacifica_enabled_services:
+        - notify_frontend
+        - notify_backend

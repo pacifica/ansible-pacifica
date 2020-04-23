@@ -1,0 +1,26 @@
+---
+dependency:
+  name: galaxy
+  options:
+    role-file: molecule/common/requirements.yml
+driver:
+  name: docker
+lint: yamllint . && ansible-lint
+platforms:
+  - name: core-centos7
+    image: centos:7
+    privileged: true
+    capabilities:
+      - SYS_ADMIN
+    volumes:
+      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    command: /usr/lib/systemd/systemd
+provisioner:
+  name: ansible
+verifier:
+  name: testinfra
+  directory: ../common/core_tests
+  additional_files_or_dirs:
+    - ../common_tests/test_default.py
+  lint:
+    name: pre-commit

@@ -6,15 +6,21 @@ services: docker
 language: python
 python: 3.8
 env:
-  - SCENERIO=archiveinterface
-  - SCENERIO=core
-  - SCENERIO=default
-  - SCENERIO=in
-  - SCENERIO=notify
-  - SCENERIO=out
+  - SCENARIO=archiveinterface-centos7
+  - SCENARIO=archiveinterface-ubuntu18.04
+  - SCENARIO=core-centos7
+  - SCENARIO=core-ubuntu18.04
+  - SCENARIO=default-centos7
+  - SCENARIO=default-ubuntu18.04
+  - SCENARIO=in-centos7
+  - SCENARIO=in-ubuntu18.04
+  - SCENARIO=notify-centos7
+  - SCENARIO=notify-ubuntu18.04
+  - SCENARIO=out-centos7
+  - SCENARIO=out-ubuntu18.04
 install: pip install ansible molecule docker-py pre-commit pylint pep257 yamllint ansible-lint pytest testinfra
 script:
   - pushd .. && ln -s ansible-pacifica pacifica.ansible_pacifica && popd
-  - travis_wait 60 molecule test -s $SCENERIO
+  - molecule test -s $SCENARIO
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
