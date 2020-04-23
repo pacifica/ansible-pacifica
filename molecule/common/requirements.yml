@@ -1,0 +1,9 @@
+---
+# PostgreSQL
+- name: rh8.postgresql
+  src: geerlingguy.postgresql
+- name: rh7.postgresql
+  src: ANXS.postgresql
+# Redis
+- name: redis
+  src: DavidWittman.redis

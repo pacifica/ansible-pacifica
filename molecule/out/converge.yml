@@ -1,6 +1,17 @@
 ---
 - name: Converge
   hosts: all
+  vars:
+    postgresql_ext_install_dev_headers: true
+    postgresql_apt_dependencies: ["python3-psycopg2", "locales"]
+    postgresql_version: 10
+    postgresql_databases:
+      - name: pacifica_cartd
+        owner: pacifica
+    postgresql_users:
+      - name: pacifica
+        pass: pacifica
+        password: pacifica
   pre_tasks:
     - name: install curl
       package:
@@ -13,19 +24,30 @@
           - glibc-devel
           - make
       when: "ansible_os_family == 'RedHat'"
+    - name: Set PostgreSQL for RedHat 8
+      set_fact:
+        postgresql_packages:
+          - postgresql
+          - postgresql-devel
+          - postgresql-server
+          - postgresql-contrib
+      when:
+        - ansible_os_family == 'RedHat'
+        - ansible_distribution_major_version | int >= 8
   roles:
     - role: redis
       redis_travis_ci: true
-    - role: postgresql
-      postgresql_ext_install_dev_headers: true
-      postgresql_apt_dependencies: ["python3-psycopg2", "locales"]
-      postgresql_version: 10
-      postgresql_databases:
-        - name: pacifica_cartd
-          owner: pacifica
-      postgresql_users:
-        - name: pacifica
-          pass: pacifica
+    - role: rh7.postgresql
+      when: |
+        (
+          ansible_os_family == 'RedHat' and
+          ansible_distribution_major_version | int < 8
+        ) or
+        ansible_os_family == 'Debian'
+    - role: rh8.postgresql
+      when:
+        - ansible_os_family == 'RedHat'
+        - ansible_distribution_major_version | int >= 8
     - role: pacifica.ansible_pacifica
       pacifica_cartd_config: &pacifica_cartd_config
         celery:

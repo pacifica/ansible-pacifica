@@ -1,6 +1,8 @@
 ---
 dependency:
   name: galaxy
+  options:
+    role-file: molecule/common/requirements.yml
 driver:
   name: docker
 lint: yamllint . && ansible-lint
