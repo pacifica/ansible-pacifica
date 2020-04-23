@@ -1,0 +1,72 @@
+---
+- name: Deploy Pacifica module INI configuration(s)
+  vars:
+    service: "{{ item }}"
+    value: "{{ services.get(item).vars.ini_config|default({}) }}"
+  template:
+    src: templates/config.ini.j2
+    dest: >-
+      {{ services.get(item).vars.virtualenv_path|default('/opt') }}/{{
+      services.get(item).vars.virtualenv|default('default') }}/{{
+      item }}.ini
+  notify:
+    - "Pacifica: Reload uWSGI Service"
+  loop: "{{ pacifica_enabled_services }}"
+  tags:
+    - pacifica
+    - pacifica_python
+
+- name: Deploy Pacifica module CherryPy configuration(s)
+  vars:
+    service: "{{ item }}"
+    value: "{{ default_cp_config | combine(services.get(item).vars.cp_config|default({})) }}"
+  template:
+    src: templates/config-cp.ini.j2
+    dest: >-
+      {{ services.get(item).vars.virtualenv_path|default('/opt') }}/{{
+      services.get(item).vars.virtualenv|default('default') }}/{{
+      item }}-cp.ini
+  notify:
+    - "Pacifica: Reload uWSGI Service"
+  loop: "{{ pacifica_enabled_services }}"
+  tags:
+    - pacifica
+    - pacifica_python
+
+- name: Deploy module service start script(s)
+  register: restart
+  no_log: "{{ enable_no_log|default(true) }}"
+  vars:
+    service: "{{ item }}"
+    value: "{{ services.get(item).vars }}"
+  template:
+    src: templates/start_script.j2
+    dest: >-
+      {{ services.get(item).vars.virtualenv_path|default('/opt') }}/{{
+      services.get(item).vars.virtualenv|default('default') }}/{{
+      item }}
+    mode: 0750
+  notify:
+    - "Pacifica: Restart uWSGI Service"
+  loop: "{{ pacifica_enabled_services }}"
+  tags:
+    - pacifica
+    - pacifica_python
+
+- name: Deploy systemd unit file(s)
+  vars:
+    service: "{{ item }}"
+    value: "{{ services.get(item).vars }}"
+  template:
+    src: templates/service.j2
+    dest: "/etc/systemd/system/{{ item }}.service"
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - "Pacifica: Restart uWSGI Service"
+  loop: "{{ pacifica_enabled_services }}"
+  tags:
+    - pacifica
+    - pacifica_python
+  become: true

@@ -1,0 +1,24 @@
+---
+- name: Include Package Vars.
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution }}.yml"
+    - "{{ ansible_os_family }}.yml"
+    - default.yaml
+  tags:
+    - pacifica
+    - pacifica_python
+- name: Include CherryPy Config.
+  include_vars:
+    file: defaults/cp_config.yml
+    name: default_cp_config
+  tags:
+    - pacifica
+    - pacifica_python
+- name: Include Pacifica Service Vars.
+  include_vars: "defaults/{{ item }}.yml"
+  register: vars_result
+  loop: "{{ pacifica_enabled_services }}"
+  tags:
+    - pacifica
+    - pacifica_python
