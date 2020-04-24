@@ -19,6 +19,7 @@
   include_vars: "defaults/{{ item }}.yml"
   register: vars_result
   loop: "{{ pacifica_enabled_services }}"
+  ignore_errors: true
   tags:
     - pacifica
     - pacifica_python
