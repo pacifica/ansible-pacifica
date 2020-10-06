@@ -6,7 +6,7 @@ dependency:
     role-file: molecule/common/requirements.yml
 driver:
   name: docker
-lint: yamllint . && ansible-lint
+lint: yamllint . && ansible-lint -x 106
 platforms:
   - name: {{ scenario }}-{{ platform }}{{ platform_version }}
     image: {{ platform }}:{{ platform_version }}{% if platform == 'ubuntu' %}
