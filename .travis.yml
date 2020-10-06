@@ -30,7 +30,7 @@ env:
   - SCENARIO=out-centos7
   - SCENARIO=out-centos8
   - SCENARIO=out-ubuntu18.04
-install: pip install ansible molecule docker-py pre-commit pylint pep257 yamllint ansible-lint pytest testinfra
+install: pip install ansible molecule docker pre-commit pylint pep257 yamllint ansible-lint pytest testinfra
 script:
   - pushd .. && ln -s ansible-pacifica pacifica.ansible_pacifica && popd
   - python molecule/gen-scenarios.py
