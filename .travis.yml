@@ -6,28 +6,28 @@ services: docker
 language: python
 python: 3.8
 env:
-  - SCENARIO=allinone-centos7
+  - SCENARIO=allinone-ubuntu20.04
   - SCENARIO=allinone-centos8
   - SCENARIO=allinone-ubuntu18.04
-  - SCENARIO=twoinone-centos7
+  - SCENARIO=twoinone-ubuntu20.04
   - SCENARIO=twoinone-centos8
   - SCENARIO=twoinone-ubuntu18.04
-  - SCENARIO=archiveinterface-centos7
+  - SCENARIO=archiveinterface-ubuntu20.04
   - SCENARIO=archiveinterface-centos8
   - SCENARIO=archiveinterface-ubuntu18.04
-  - SCENARIO=core-centos7
+  - SCENARIO=core-ubuntu20.04
   - SCENARIO=core-centos8
   - SCENARIO=core-ubuntu18.04
-  - SCENARIO=default-centos7
+  - SCENARIO=default-ubuntu20.04
   - SCENARIO=default-centos8
   - SCENARIO=default-ubuntu18.04
-  - SCENARIO=in-centos7
+  - SCENARIO=in-ubuntu20.04
   - SCENARIO=in-centos8
   - SCENARIO=in-ubuntu18.04
-  - SCENARIO=notify-centos7
+  - SCENARIO=notify-ubuntu20.04
   - SCENARIO=notify-centos8
   - SCENARIO=notify-ubuntu18.04
-  - SCENARIO=out-centos7
+  - SCENARIO=out-ubuntu20.04
   - SCENARIO=out-centos8
   - SCENARIO=out-ubuntu18.04
 install: pip install ansible molecule docker pre-commit pylint pep257 yamllint ansible-lint pytest testinfra
