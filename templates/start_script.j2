@@ -6,7 +6,7 @@ export {{ env_var }}={{ env_val }}
 {% endfor %}
 {% endif %}
 {% if value.celery is defined %}
-exec celery -A pacifica.{{ value.pacifica_module }}.tasks worker -l info
+exec celery -A pacifica.{{ value.pacifica_module }}.tasks worker
 {% else %}
 {% if value.no_db is defined %}
 # no_db set for {{ service }} in ansible vars dictionary
