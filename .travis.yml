@@ -33,7 +33,7 @@ env:
 install: pip install ansible molecule docker pre-commit pylint pep257 yamllint ansible-lint pytest testinfra
 script:
   - pushd .. && ln -s ansible-pacifica pacifica.ansible_pacifica && popd
-  - python molecule/gen-scenarios.py
+  - python molecule/gen_scenarios.py
   - molecule test -s $SCENARIO
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
