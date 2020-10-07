@@ -18,7 +18,8 @@ Supported Platforms
 | os           | tested             |
 |--------------|--------------------|
 | Ubuntu 18.04 | :heavy_check_mark: |
-| CentOS 7     | :heavy_check_mark: |
+| Ubuntu 20.04 | :heavy_check_mark: |
+| CentOS 8     | :heavy_check_mark: |
 
 Role Variables
 --------------
