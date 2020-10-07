@@ -18,7 +18,8 @@ Supported Platforms
 | os           | tested             |
 |--------------|--------------------|
 | Ubuntu 18.04 | :heavy_check_mark: |
-| CentOS 7     | :heavy_check_mark: |
+| Ubuntu 20.04 | :heavy_check_mark: |
+| CentOS 8     | :heavy_check_mark: |
 
 Role Variables
 --------------
@@ -41,7 +42,7 @@ Role Defaults
 --------------
 
 The role defaults are there to control the user driven configuration of the
-Pacifica services. Each service configuration should be a dictionary named 
+Pacifica services. Each service configuration should be a dictionary named
 in the `pacifica_available_services` dictionary. The service configurations
 are then referenced by items in the `pacifica_enabled_services` list.
 

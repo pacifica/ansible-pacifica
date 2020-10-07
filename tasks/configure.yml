@@ -5,6 +5,7 @@
     value: "{{ services.get(item).vars.ini_config|default({}) }}"
   template:
     src: templates/config.ini.j2
+    mode: '0644'
     dest: >-
       {{ services.get(item).vars.virtualenv_path|default('/opt') }}/{{
       services.get(item).vars.virtualenv|default('default') }}/{{
@@ -22,6 +23,7 @@
     value: "{{ default_cp_config | combine(services.get(item).vars.cp_config|default({})) }}"
   template:
     src: templates/config-cp.ini.j2
+    mode: '0644'
     dest: >-
       {{ services.get(item).vars.virtualenv_path|default('/opt') }}/{{
       services.get(item).vars.virtualenv|default('default') }}/{{

@@ -1,7 +1,7 @@
 ---
 - name: "Pacifica: Started uWSGI Service"
-  retries: 3
-  delay: 3
+  retries: 5
+  delay: 5
   register: result
   until: result.get('status', {}).get('SubState', '') == 'running'
   systemd:

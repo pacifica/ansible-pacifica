@@ -105,5 +105,5 @@ venv.bak/
 
 molecule/*
 !molecule/common/
-!molecule/gen-scenarios.py
+!molecule/gen_scenarios.py
 !molecule/ubuntu/

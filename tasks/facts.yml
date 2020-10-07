@@ -14,6 +14,11 @@
     python_virtualenv_command: "{{ __python_virtualenv_command }}"
   when: python_virtualenv_command is not defined
 
+- name: Set Python virtualenv
+  set_fact:
+    python_virtualenv: "{{ __python_virtualenv }}"
+  when: python_virtualenv is not defined
+
 - name: Set Pacifica Service Facts.
   set_fact:
     default_vars: "{{ vars_result.results | items2dict(key_name='item', value_name='ansible_facts') }}"

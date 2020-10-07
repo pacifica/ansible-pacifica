@@ -6,11 +6,10 @@ dependency:
     role-file: molecule/common/requirements.yml
 driver:
   name: docker
-lint: yamllint . && ansible-lint
+lint: yamllint . && ansible-lint -x 106
 platforms:
   - name: {{ scenario }}-{{ platform }}{{ platform_version }}
-    image: {{ platform }}:{{ platform_version }}{% if platform == 'ubuntu' %}
-    dockerfile: ../ubuntu/Dockerfile.j2{% endif %}
+    image: geerlingguy/docker-{{ platform }}{{ platform_version }}-ansible:latest
     privileged: true
     capabilities:
       - SYS_ADMIN

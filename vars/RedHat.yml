@@ -5,32 +5,18 @@ __setup_common_packages:
   - make
   - glibc-devel
   - kernel-devel
-__setup_7_packages:
-  - centos-release-scl
-  - centos-release-scl-rh
-  - python-setuptools
 __setup_8_packages:
-  - python3-setuptools
+  - python38-setuptools
 __setup_packages: |
-  {% if (ansible_distribution_major_version|int <= 7) %}
-  {{ __setup_common_packages + __setup_7_packages }}
-  {% else %}
   {{ __setup_common_packages + __setup_8_packages }}
-  {% endif %}
-__python_7_packages:
-  - python3
-  - python3-pip
-  - python3-setuptools
-  - python36-virtualenv
 __python_8_packages:
-  - python36
-  - python3-pip
-  - python3-setuptools
+  - python38
+  - python38-pip
+  - python38-setuptools
+  - python38-setuptools-wheel
+  - python38-devel
   - python3-virtualenv
 __python_packages: |
-  {% if (ansible_distribution_major_version|int <= 7) %}
-  {{ __python_7_packages }}
-  {% else %}
   {{ __python_8_packages }}
-  {% endif %}
-__python_virtualenv_command: virtualenv-3
+__python_virtualenv_command: "virtualenv-3"
+__python_virtualenv: "/usr/bin/python3.8"

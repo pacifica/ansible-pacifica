@@ -3,9 +3,6 @@
 - name: Converge
   hosts: all
   pre_tasks:
-    - name: install curl
-      package:
-        name: curl
-        state: present
+    - include_tasks: ../common/pre-tasks.yml
   roles:
     - role: pacifica.ansible_pacifica
