@@ -20,7 +20,7 @@ def main():
     molecule_dir = os.path.dirname(__file__)
     platform_versions = {
         'centos': ['8'],
-        'ubuntu': ['18.04', '20.04']
+        'ubuntu': ['1804', '2004']
     }
     scenario_list = [
         'archiveinterface',

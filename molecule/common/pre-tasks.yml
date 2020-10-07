@@ -1,4 +1,8 @@
 ---
+- name: apt get update if debian
+  apt:
+    update_cache: true
+  when: "ansible_os_family == 'Debian'"
 - name: install curl
   package:
     name: curl
@@ -9,6 +13,7 @@
       - gcc
       - glibc-devel
       - make
+      - glibc-langpacks-en
   when: "ansible_os_family == 'RedHat'"
 - name: Set PostgreSQL for RedHat 8
   set_fact:
