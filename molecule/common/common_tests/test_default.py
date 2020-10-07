@@ -17,3 +17,10 @@ def test_pacifica_env(host):
         assert run_file.exists
         assert run_file.user == 'root'
         assert run_file.group == 'root'
+
+
+def test_pacifica_python(host):
+    """Make sure we are running Python 3.8."""
+    python_version = host.run("/opt/default/bin/python --version")
+    assert python_version.rc == 0
+    assert '3.8' in python_version.stdout
