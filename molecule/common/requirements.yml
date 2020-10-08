@@ -2,6 +2,7 @@
 # PostgreSQL
 - name: rh8.postgresql
   src: geerlingguy.postgresql
+- src: geerlingguy.mysql
 - name: rh7.postgresql
   src: ANXS.postgresql
 # Redis
