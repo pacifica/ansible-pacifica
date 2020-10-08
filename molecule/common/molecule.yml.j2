@@ -21,7 +21,7 @@ provisioner:
   name: ansible
 verifier:
   name: testinfra
-  directory: ../common/{{ scenario }}_tests
+  directory: ../common/{{ scenario.replace('-', '_') }}_tests
   additional_files_or_dirs:{% if scenario != 'default' %}
     - ../common_tests/test_default.py{% else %} []{% endif %}{% if scenario == 'in' or scenario == 'out' or scenario == 'notify' %}
     - ../common_tests/test_redis.py{% endif %}

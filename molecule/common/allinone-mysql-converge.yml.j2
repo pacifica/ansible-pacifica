@@ -9,14 +9,14 @@
         - pip
         - redis
         - amqp
-        - psycopg2
+        - pymysql
     __notify_config: &__notify_config
       <<: *__common_python
       ini_config:
         celery:
           broker_url: redis://127.0.0.1:6379/0
         database:
-          peewee_url: postgres://pacifica:pacifica@127.0.0.1:5432/pacifica_notify
+          peewee_url: mysql://pacifica_notify:pacifica_notify@127.0.0.1:3306/pacifica_notify
     __cartd_config: &__cartd_config
       <<: *__common_python
       env_vars:
@@ -25,7 +25,7 @@
         CARTD_CPCONFIG: /opt/default/cartd_frontend-cp.ini
       ini_config:
         database:
-          peewee_url: postgres://pacifica:pacifica@127.0.0.1:5432/pacifica_cartd
+          peewee_url: mysql://pacifica_cartd:pacifica_cartd@127.0.0.1:3306/pacifica_cartd
         celery:
           broker_url: redis://127.0.0.1:6379/1
     __ingest_config: &__ingest_config
@@ -36,7 +36,7 @@
         INGEST_CPCONFIG: /opt/default/ingest_frontend-cp.ini
       ini_config:
         database:
-          peewee_url: postgres://pacifica:pacifica@127.0.0.1:5432/pacifica_ingest
+          peewee_url: mysql://pacifica_ingest:pacifica_ingest@127.0.0.1:3306/pacifica_ingest
         celery:
           broker_url: redis://127.0.0.1:6379/2
     pacifica_available_services:
@@ -60,30 +60,41 @@
         <<: *__common_python
         ini_config:
           database:
-            peewee_url: postgres://pacifica:pacifica@127.0.0.1:5432/pacifica_uniqueid
+            peewee_url: mysql://pacifica_uniqueid:pacifica_uniqueid@127.0.0.1:3306/pacifica_uniqueid
       notify_backend: *__notify_config
       notify_frontend: *__notify_config
       ingest_backend: *__ingest_config
       ingest_frontend: *__ingest_config
       cartd_backend: *__cartd_config
       cartd_frontend: *__cartd_config
+    mysql_root_password: super-secure-password
+    mysql_databases:
+      - name: pacifica_uniqueid
+      - name: pacifica_ingest
+      - name: pacifica_cartd
+      - name: pacifica_notify
+    mysql_users:
+      - name: pacifica_uniqueid
+        password: pacifica_uniqueid
+        host: '%'
+        priv: 'pacifica_uniqueid.*:ALL'
+      - name: pacifica_ingest
+        password: pacifica_ingest
+        host: '%'
+        priv: 'pacifica_ingest.*:ALL'
+      - name: pacifica_cartd
+        password: pacifica_cartd
+        host: '%'
+        priv: 'pacifica_cartd.*:ALL'
+      - name: pacifica_notify
+        password: pacifica_notify
+        host: '%'
+        priv: 'pacifica_notify.*:ALL'
     postgresql_ext_install_dev_headers: true
     postgresql_apt_dependencies: ["python3-psycopg2", "locales"]
     postgresql_version: 10
     postgresql_databases:
       - name: pacifica_metadata
-        owner: pacifica
-        encoding: utf8
-      - name: pacifica_uniqueid
-        owner: pacifica
-        encoding: utf8
-      - name: pacifica_ingest
-        owner: pacifica
-        encoding: utf8
-      - name: pacifica_cartd
-        owner: pacifica
-        encoding: utf8
-      - name: pacifica_notify
         owner: pacifica
         encoding: utf8
     postgresql_users:
@@ -99,6 +110,7 @@
       when: ansible_os_family == 'Debian'
     - role: rh8.postgresql
       when: ansible_os_family == 'RedHat'
+    - role: geerlingguy.mysql
     - role: pacifica.ansible_pacifica
       environment:
         PATH: /usr/pgsql-10/bin:{% raw %}{{ ansible_env.PATH }}{% endraw %}

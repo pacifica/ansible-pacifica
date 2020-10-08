@@ -30,6 +30,7 @@ def main():
         'notify',
         'out',
         'allinone',
+        'allinone-mysql',
         'twoinone'
     ]
     for scenario in scenario_list:

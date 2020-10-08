@@ -9,6 +9,9 @@ env:
   - SCENARIO=allinone-ubuntu2004
   - SCENARIO=allinone-centos8
   - SCENARIO=allinone-ubuntu1804
+  - SCENARIO=allinone-mysql-ubuntu2004
+  - SCENARIO=allinone-mysql-centos8
+  - SCENARIO=allinone-mysql-ubuntu1804
   - SCENARIO=twoinone-ubuntu2004
   - SCENARIO=twoinone-centos8
   - SCENARIO=twoinone-ubuntu1804
