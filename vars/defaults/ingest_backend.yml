@@ -1,5 +1,6 @@
 ---
 pacifica_module: ingest
+pip_module: pacifica-ingest
 celery: true
 no_db: true
 env_vars:

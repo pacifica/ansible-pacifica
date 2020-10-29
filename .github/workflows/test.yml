@@ -1,0 +1,44 @@
+---
+name: Molecule Test
+on: [push, pull_request]
+jobs:
+  molecule:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        scenario:
+          - allinone-ubuntu2004
+          - allinone-centos8
+          - allinone-ubuntu1804
+          - allinone-mysql-ubuntu2004
+          - allinone-mysql-centos8
+          - allinone-mysql-ubuntu1804
+          - twoinone-ubuntu2004
+          - twoinone-centos8
+          - twoinone-ubuntu1804
+          - archiveinterface-ubuntu2004
+          - archiveinterface-centos8
+          - archiveinterface-ubuntu1804
+          - core-ubuntu2004
+          - core-centos8
+          - core-ubuntu1804
+          - default-ubuntu2004
+          - default-centos8
+          - default-ubuntu1804
+          - in-ubuntu2004
+          - in-centos8
+          - in-ubuntu1804
+          - notify-ubuntu2004
+          - notify-centos8
+          - notify-ubuntu1804
+          - out-ubuntu2004
+          - out-centos8
+          - out-ubuntu1804
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          path: pacifica.drupal_keycloak
+      - run: python molecule/gen_scenarios.py
+      - uses: gofrolist/molecule-action@v2
+        with:
+          molecule_working_dir: pacifica.drupal_keycloak

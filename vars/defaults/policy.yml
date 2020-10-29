@@ -1,5 +1,6 @@
 ---
 pacifica_module: policy
+pip_module: pacifica-policy
 socket_port: "8181"
 no_db: true
 env_vars:

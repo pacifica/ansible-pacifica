@@ -1,5 +1,6 @@
 ---
 pacifica_module: archiveinterface
+pip_module: pacifica-archiveinterface
 no_db: true
 socket_port: "8080"
 env_vars:
