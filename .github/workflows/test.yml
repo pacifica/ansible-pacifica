@@ -39,7 +39,10 @@ jobs:
         with:
           path: pacifica.drupal_keycloak
       - name: Generate the scenarios
-        run: python molecule/gen_scenarios.py
+        run: |
+          echo $PWD
+          ls
+          python molecule/gen_scenarios.py
       - uses: gofrolist/molecule-action@v2
         with:
           molecule_working_dir: pacifica.drupal_keycloak
