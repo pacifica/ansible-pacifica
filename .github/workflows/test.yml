@@ -44,6 +44,7 @@ jobs:
           python-version: '3.8'
       - name: Generate the scenarios
         run: |
+          pip install jinja2
           cd pacifica.ansible_pacifica
           python molecule/gen_scenarios.py
       - uses: gofrolist/molecule-action@v2
