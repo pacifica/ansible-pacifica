@@ -37,9 +37,17 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          path: pacifica.drupal_keycloak
+          path: pacifica.ansible_pacifica
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
       - name: Generate the scenarios
-        run: python molecule/gen_scenarios.py
+        run: |
+          pip install jinja2
+          cd pacifica.ansible_pacifica
+          python molecule/gen_scenarios.py
       - uses: gofrolist/molecule-action@v2
         with:
-          molecule_working_dir: pacifica.drupal_keycloak
+          molecule_working_dir: pacifica.ansible_pacifica
+          molecule_args: --scenario-name ${{ matrix.scenario }}
