@@ -37,12 +37,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          path: pacifica.drupal_keycloak
+          path: pacifica.ansible_pacifica
       - name: Generate the scenarios
         run: |
-          echo $PWD
-          ls
+          cd pacifica.ansible_pacifica
           python molecule/gen_scenarios.py
       - uses: gofrolist/molecule-action@v2
         with:
-          molecule_working_dir: pacifica.drupal_keycloak
+          molecule_working_dir: pacifica.ansible_pacifica
