@@ -1,5 +1,6 @@
 ---
 pacifica_module: metadata
+pip_module: pacifica-metadata
 socket_port: "8121"
 env_vars:
   METADATA_CONFIG: "/opt/default/metadata.ini"

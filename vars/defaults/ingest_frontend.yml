@@ -1,5 +1,6 @@
 ---
 pacifica_module: ingest
+pip_module: pacifica-ingest
 socket_port: "8066"
 env_vars:
   INGEST_CONFIG: "/opt/default/ingest_frontend.ini"

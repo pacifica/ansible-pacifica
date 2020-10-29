@@ -1,5 +1,6 @@
 ---
 pacifica_module: uniqueid
+pip_module: pacifica-uniqueid
 socket_port: "8051"
 env_vars:
   UNIQUEID_CONFIG: "/opt/default/uniqueid.ini"

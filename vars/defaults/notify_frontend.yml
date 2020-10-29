@@ -1,5 +1,6 @@
 ---
 pacifica_module: notifications
+pip_module: pacifica-notifications
 socket_port: "8070"
 env_vars:
   NOTIFICATIONS_CONFIG: "/opt/default/notify_frontend.ini"

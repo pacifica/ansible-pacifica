@@ -1,5 +1,6 @@
 ---
 pacifica_module: cartd
+pip_module: pacifica-cartd
 socket_port: "8081"
 env_vars:
   CARTD_CONFIG: "/opt/default/cartd_frontend.ini"

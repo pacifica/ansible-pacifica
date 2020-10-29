@@ -1,5 +1,6 @@
 ---
 pacifica_module: cartd
+pip_module: pacifica-cartd
 celery: true
 no_db: true
 env_vars:

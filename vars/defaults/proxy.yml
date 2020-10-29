@@ -1,5 +1,6 @@
 ---
 pacifica_module: proxy
+pip_module: pacifica-proxy
 socket_port: "8180"
 no_db: true
 env_vars:
