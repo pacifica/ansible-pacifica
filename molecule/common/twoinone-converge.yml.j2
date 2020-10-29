@@ -13,6 +13,7 @@
     __cartd_1_config: &__cartd_1_config
       <<: *__common_python
       pacifica_module: cartd
+      pip_module: pacifica-cartd
       socket_port: "8081"
       env_vars:
         VOLUME_PATH: /srv/cartdata1
@@ -26,6 +27,7 @@
     __cartd_2_config: &__cartd_2_config
       <<: *__common_python
       pacifica_module: cartd
+      pip_module: pacifica-cartd
       socket_port: "8082"
       env_vars:
         VOLUME_PATH: /srv/cartdata2
