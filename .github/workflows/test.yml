@@ -38,7 +38,8 @@ jobs:
       - uses: actions/checkout@v2
         with:
           path: pacifica.drupal_keycloak
-      - run: python molecule/gen_scenarios.py
+      - name: Generate the scenarios
+        run: python molecule/gen_scenarios.py
       - uses: gofrolist/molecule-action@v2
         with:
           molecule_working_dir: pacifica.drupal_keycloak
