@@ -8,6 +8,7 @@ ExecReload=/bin/kill -HUP $MAINPID
 KillSignal=TERM
 Restart=on-failure
 SyslogIdentifier={{ service }}
+User={{ pacifica_user_name }}
 
 [Install]
 WantedBy=multi-user.target
