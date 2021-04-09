@@ -15,7 +15,6 @@
     state: "{{ services.get(item).vars.aux_pkg_state|default('latest') }}"
   loop: "{{ pacifica_enabled_services }}"
   become: true
-  become_method: su
   become_user: "{{ pacifica_user_name }}"
   become_flags: '-s /bin/sh'
   tags:
@@ -33,7 +32,6 @@
   notify:
     - "Pacifica: Reload uWSGI Service"
   loop: "{{ pacifica_enabled_services }}"
-  become_method: su
   become_user: "{{ pacifica_user_name }}"
   become_flags: '-s /bin/sh'
   tags:
