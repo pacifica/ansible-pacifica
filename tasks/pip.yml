@@ -1,4 +1,16 @@
 ---
+- name: Create install directorie(s) with correct permissions
+  file:
+    name: "{{ services.get(item).vars.pip_module }}{{ services.get(item).vars.version|default('') }}"
+    path: "{{ services.get(item).vars.virtualenv|default('default') }}"
+    state: directory
+    mode: 0755
+    owner: "{{ pacifica_user_name }}"
+  loop: "{{ pacifica_enabled_services }}"
+  tags:
+    - pacifica
+    - pacifica_python
+    
 - name: Install auxillary packages
   vars:
     default_aux_pkg:
