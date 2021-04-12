@@ -1,6 +1,6 @@
 ---
-- include_tasks: pacifica_galaxy_user.yml
 - include_tasks: vars.yml
+- include_tasks: user.yml
 - include_tasks: facts.yml
 - include_tasks: packages.yml
 - include_tasks: pip.yml
