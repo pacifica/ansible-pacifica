@@ -13,7 +13,7 @@
   ansible.builtin.group:
     name: "{{ pacifica_group_name }}"
     state: present
-    system: yes
+    system: True
 
 - name: Add pacifica user
   ansible.builtin.user:
@@ -21,4 +21,4 @@
     comment: Pacifica Local NonPriv User
     group: "{{ pacifica_group_name }}"
     state: present
-    system: yes
+    system: True
