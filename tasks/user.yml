@@ -11,3 +11,4 @@
     group: "{{ pacifica_group_name }}"
     state: present
     system: true
+  when: pacifica_user_name != 'root'
