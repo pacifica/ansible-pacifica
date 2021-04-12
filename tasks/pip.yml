@@ -10,7 +10,7 @@
   tags:
     - pacifica
     - pacifica_python
-    
+
 - name: Install auxillary packages
   vars:
     default_aux_pkg:
