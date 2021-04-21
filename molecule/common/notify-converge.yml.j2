@@ -15,7 +15,7 @@
         pass: notifications
         password: notifications
   pre_tasks:
-    - include_tasks: ../common/pre-tasks.yml
+    - include_tasks: ../common/tasks/pre-tasks.yml
   roles:
     - role: redis
       redis_travis_ci: true

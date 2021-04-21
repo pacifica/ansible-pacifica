@@ -1,11 +1,11 @@
 ---
-- name: Create install directorie(s) with correct permissions
+- name: Create install directories with correct permissions
   file:
-    name: "{{ services.get(item).vars.pip_module }}{{ services.get(item).vars.version|default('') }}"
-    path: "{{ services.get(item).vars.virtualenv|default('default') }}"
+    path: "{{ services.get(item).vars.virtualenv_path|default('/opt') }}/{{ services.get(item).vars.virtualenv|default('default') }}"
     state: directory
-    mode: 0755
+    mode: "{{ pacifica_directory_mode }}"
     owner: "{{ pacifica_user_name }}"
+    group: "{{ pacifica_group_name }}"
   loop: "{{ pacifica_enabled_services }}"
   tags:
     - pacifica
@@ -26,7 +26,7 @@
     virtualenv_command: "{{ services.get(item).vars.virtualenv_command|default(python_virtualenv_command) }}"
     state: "{{ services.get(item).vars.aux_pkg_state|default('latest') }}"
   loop: "{{ pacifica_enabled_services }}"
-  become: true
+  become: "{{ pacifica_user_name_become }}"
   become_user: "{{ pacifica_user_name }}"
   tags:
     - pacifica
@@ -44,6 +44,7 @@
     - "Pacifica: Reload uWSGI Service"
   loop: "{{ pacifica_enabled_services }}"
   become_user: "{{ pacifica_user_name }}"
+  become: "{{ pacifica_user_name_become }}"
   tags:
     - pacifica
     - pacifica_python

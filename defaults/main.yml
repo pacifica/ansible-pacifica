@@ -1,5 +1,6 @@
 ---
 pacifica_user_name_become: true
+pacifica_directory_mode: 0755
 pacifica_package_timeout: 300
 pacifica_enabled_services: []
 pacifica_available_services:
