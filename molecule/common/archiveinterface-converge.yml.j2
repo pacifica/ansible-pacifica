@@ -3,7 +3,7 @@
 - name: Converge
   hosts: all
   pre_tasks:
-    - include_tasks: ../common/pre-tasks.yml
+    - include_tasks: ../common/tasks/pre-tasks.yml
   roles:
     - role: pacifica.ansible_pacifica
       pacifica_enabled_services:

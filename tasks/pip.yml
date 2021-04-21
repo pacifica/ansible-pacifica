@@ -1,4 +1,16 @@
 ---
+- name: Create install directories with correct permissions
+  file:
+    path: "{{ services.get(item).vars.virtualenv_path|default('/opt') }}/{{ services.get(item).vars.virtualenv|default('default') }}"
+    state: directory
+    mode: "{{ pacifica_directory_mode }}"
+    owner: "{{ pacifica_user_name }}"
+    group: "{{ pacifica_group_name }}"
+  loop: "{{ pacifica_enabled_services }}"
+  tags:
+    - pacifica
+    - pacifica_python
+
 - name: Install auxillary packages
   vars:
     default_aux_pkg:
@@ -14,6 +26,8 @@
     virtualenv_command: "{{ services.get(item).vars.virtualenv_command|default(python_virtualenv_command) }}"
     state: "{{ services.get(item).vars.aux_pkg_state|default('latest') }}"
   loop: "{{ pacifica_enabled_services }}"
+  become: "{{ pacifica_user_name_become }}"
+  become_user: "{{ pacifica_user_name }}"
   tags:
     - pacifica
     - pacifica_python
@@ -29,6 +43,8 @@
   notify:
     - "Pacifica: Reload uWSGI Service"
   loop: "{{ pacifica_enabled_services }}"
+  become_user: "{{ pacifica_user_name }}"
+  become: "{{ pacifica_user_name_become }}"
   tags:
     - pacifica
     - pacifica_python

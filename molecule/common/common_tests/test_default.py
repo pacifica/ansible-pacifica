@@ -6,7 +6,6 @@
 def test_pacifica_env(host):
     """Test the pacifica virtual env is there."""
     check_bins = [
-        '/opt/default/bin/activate',
         '/usr/bin/gcc',
         '/usr/bin/make',
         '/usr/bin/python3',
@@ -17,6 +16,10 @@ def test_pacifica_env(host):
         assert run_file.exists
         assert run_file.user == 'root'
         assert run_file.group == 'root'
+    run_file = host.file('/opt/default/bin/activate')
+    assert run_file.exists
+    assert run_file.user == 'pacifica'
+    assert run_file.group == 'pacifica'
 
 
 def test_pacifica_python(host):

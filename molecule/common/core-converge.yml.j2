@@ -18,7 +18,7 @@
         pass: metadata
         password: metadata
   pre_tasks:
-    - include_tasks: ../common/pre-tasks.yml
+    - include_tasks: ../common/tasks/pre-tasks.yml
   roles:
     - role: rh7.postgresql
       when: |

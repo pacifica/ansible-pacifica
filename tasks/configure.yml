@@ -10,6 +10,7 @@
       {{ services.get(item).vars.virtualenv_path|default('/opt') }}/{{
       services.get(item).vars.virtualenv|default('default') }}/{{
       item }}.ini
+    owner: "{{ pacifica_user_name }}"
   notify:
     - "Pacifica: Reload uWSGI Service"
   loop: "{{ pacifica_enabled_services }}"
@@ -28,6 +29,7 @@
       {{ services.get(item).vars.virtualenv_path|default('/opt') }}/{{
       services.get(item).vars.virtualenv|default('default') }}/{{
       item }}-cp.ini
+    owner: "{{ pacifica_user_name }}"
   notify:
     - "Pacifica: Reload uWSGI Service"
   loop: "{{ pacifica_enabled_services }}"
@@ -48,6 +50,7 @@
       services.get(item).vars.virtualenv|default('default') }}/{{
       item }}
     mode: 0750
+    owner: "{{ pacifica_user_name }}"
   notify:
     - "Pacifica: Restart uWSGI Service"
   loop: "{{ pacifica_enabled_services }}"
