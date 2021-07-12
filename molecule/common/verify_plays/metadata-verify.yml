@@ -1,0 +1,39 @@
+---
+- name: Verify
+  hosts: all
+  collections:
+    - community.general
+  tasks:
+    - name: Get all ports on hosts
+      listen_ports_facts:
+    - name: Assert metadata is listening
+      assert:
+        that:
+          - "8121 in (ansible_facts.tcp_listen | map(attribute='port') | list)"
+    - name: Stat files
+      stat:
+        path: "{{ item }}"
+      register: file_stat_results
+      loop:
+        - /opt/default/metadata.ini
+        - /opt/default/metadata-cp.ini
+        - /opt/default/metadata
+        - /etc/systemd/system/metadata.service
+    - name: Verify files
+      assert:
+        that:
+          - item.exists
+      loop: "{{ file_stat_results.results | map(attribute='stat') | list }}"
+    - name: Status the service
+      systemd:
+        name: metadata
+        state: started
+    - name: Check Metadata URL
+      uri:
+        url: http://127.0.0.1:8121/
+        return_content: true
+      register: metadata_result
+    - name: Assert some content
+      assert:
+        that:
+          - metadata_result.status == 200

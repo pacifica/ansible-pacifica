@@ -34,10 +34,10 @@ def main():
         'twoinone'
     ]
     for scenario in scenario_list:
-        molecule_tmplt = Template(
-            open(join(molecule_dir, 'common', 'molecule.yml.j2')).read())
-        converge_tmplt = Template(open(join(
-            molecule_dir, 'common', '{}-converge.yml.j2'.format(scenario))).read())
+        with open(join(molecule_dir, 'common', 'molecule.yml.j2'), 'r') as file_fd:
+            molecule_tmplt = Template(file_fd.read())
+        with open(join(molecule_dir, 'common', '{}-converge.yml.j2'.format(scenario))) as file_fd:
+            converge_tmplt = Template(file_fd.read())
         for platform, version_list in platform_versions.items():
             for version in version_list:
                 os.makedirs(join(

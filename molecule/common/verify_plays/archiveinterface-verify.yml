@@ -1,0 +1,40 @@
+---
+- import_playbook: common-verify.yml
+- name: Verify
+  hosts: all
+  collections:
+    - community.general
+  tasks:
+    - name: Get all ports on hosts
+      listen_ports_facts:
+    - name: Assert archive interface is listening
+      assert:
+        that:
+          - "8080 in (ansible_facts.tcp_listen | map(attribute='port') | list)"
+    - name: Stat files
+      stat:
+        path: "{{ item }}"
+      register: file_stat_results
+      loop:
+        - /opt/default/archiveinterface.ini
+        - /opt/default/archiveinterface-cp.ini
+        - /opt/default/archiveinterface
+        - /etc/systemd/system/archiveinterface.service
+    - name: Verify files
+      assert:
+        that:
+          - item.exists
+      loop: "{{ file_stat_results.results | map(attribute='stat') | list }}"
+    - name: Status the service
+      systemd:
+        name: archiveinterface
+        state: started
+    - name: Check AI URL
+      uri:
+        url: http://127.0.0.1:8080/
+        return_content: yes
+      register: ai_result
+    - name: Assert some content
+      assert:
+        that:
+          - ai_result.status == 200

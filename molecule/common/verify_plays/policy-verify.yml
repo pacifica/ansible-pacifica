@@ -1,0 +1,39 @@
+---
+- name: Verify
+  hosts: all
+  collections:
+    - community.general
+  tasks:
+    - name: Get all ports on hosts
+      listen_ports_facts:
+    - name: Assert policy is listening
+      assert:
+        that:
+          - "8181 in (ansible_facts.tcp_listen | map(attribute='port') | list)"
+    - name: Stat files
+      stat:
+        path: "{{ item }}"
+      register: file_stat_results
+      loop:
+        - /opt/default/policy.ini
+        - /opt/default/policy-cp.ini
+        - /opt/default/policy
+        - /etc/systemd/system/policy.service
+    - name: Verify files
+      assert:
+        that:
+          - item.exists
+      loop: "{{ file_stat_results.results | map(attribute='stat') | list }}"
+    - name: Status the service
+      systemd:
+        name: policy
+        state: started
+    - name: Check Policy URL
+      uri:
+        url: http://127.0.0.1:8181/
+        return_content: true
+      register: policy_result
+    - name: Assert some content
+      assert:
+        that:
+          - policy_result.status == 200

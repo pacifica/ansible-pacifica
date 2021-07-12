@@ -4,6 +4,7 @@ dependency:
   name: galaxy
   options:
     role-file: molecule/common/requirements.yml
+    requirements-file: molecule/common/requirements.yml
 driver:
   name: docker
 lint: yamllint . && ansible-lint -x 106
@@ -17,13 +18,10 @@ platforms:
       - "/sys/fs/cgroup:/sys/fs/cgroup:ro"{% if platform == 'ubuntu' %}
     command: /lib/systemd/systemd{% else %}
     command: /usr/lib/systemd/systemd{% endif %}
+    pre_build_image: true
 provisioner:
   name: ansible
+  playbooks:
+    verify: ../common/verify_plays/{{ scenario }}-verify.yml
 verifier:
-  name: testinfra
-  directory: ../common/{{ scenario.replace('-', '_') }}_tests
-  additional_files_or_dirs:{% if scenario != 'default' %}
-    - ../common_tests/test_default.py{% else %} []{% endif %}{% if scenario == 'in' or scenario == 'out' or scenario == 'notify' %}
-    - ../common_tests/test_redis.py{% endif %}
-  lint:
-    name: pre-commit
+  name: ansible

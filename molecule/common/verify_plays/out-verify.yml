@@ -1,0 +1,4 @@
+---
+- import_playbook: common-verify.yml
+- import_playbook: redis-verify.yml
+- import_playbook: cartd-verify.yml
