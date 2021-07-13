@@ -7,7 +7,20 @@
         path: "{{ item }}"
       register: file_stat_results
       loop:
+        - /opt/default/bin/python
         - /opt/default/bin/activate
+    - name: Verify files
+      assert:
+        that:
+          - item.exists
+          - item.pw_name == 'pacifica'
+          - item.gr_name == 'pacifica'
+      loop: "{{ file_stat_results.results | map(attribute='stat') | list }}"
+    - name: Stat files
+      stat:
+        path: "{{ item }}"
+      register: file_stat_results
+      loop:
         - /usr/bin/gcc
         - /usr/bin/make
         - /usr/bin/python3

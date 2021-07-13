@@ -1,6 +1,8 @@
 ---
 galaxy_info:
   author: David Brown
+  role_name: ansible_pacifica
+  namespace: pacifica
   description: Pacifica Ansible Role
   company: Pacifica Software.
   license: LGPLv3

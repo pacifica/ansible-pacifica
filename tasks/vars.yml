@@ -23,3 +23,11 @@
   tags:
     - pacifica
     - pacifica_python
+- name: Set Pacifica User Facts
+  set_fact:
+    pacifica_user_name: "{{ __pacifica_user_name }}"
+  when: pacifica_user_name is not defined
+- name: Set Pacifica Group Facts
+  set_fact:
+    pacifica_group_name: "{{ __pacifica_group_name }}"
+  when: pacifica_group_name is not defined
