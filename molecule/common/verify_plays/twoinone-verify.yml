@@ -1,0 +1,65 @@
+---
+- import_playbook: archiveinterface-verify.yml
+- name: Verify
+  hosts: all
+  collections:
+    - community.general
+  tasks:
+    - name: Get all ports on hosts
+      listen_ports_facts:
+    - name: Assert Cartd is listening
+      assert:
+        that:
+          - "8081 in (ansible_facts.tcp_listen | map(attribute='port') | list)"
+          - "8082 in (ansible_facts.tcp_listen | map(attribute='port') | list)"
+    - name: Stat files
+      stat:
+        path: "{{ item }}"
+      register: file_stat_results
+      loop:
+        - /opt/default/cartd_1_frontend.ini
+        - /opt/default/cartd_2_frontend.ini
+        - /opt/default/cartd_1_backend.ini
+        - /opt/default/cartd_2_backend.ini
+        - /opt/default/cartd_1_frontend-cp.ini
+        - /opt/default/cartd_2_frontend-cp.ini
+        - /opt/default/cartd_1_frontend
+        - /opt/default/cartd_2_frontend
+        - /opt/default/cartd_1_backend
+        - /opt/default/cartd_2_backend
+        - /etc/systemd/system/cartd_1_frontend.service
+        - /etc/systemd/system/cartd_2_frontend.service
+        - /etc/systemd/system/cartd_1_backend.service
+        - /etc/systemd/system/cartd_2_backend.service
+    - name: Verify files
+      assert:
+        that:
+          - item.exists
+      loop: "{{ file_stat_results.results | map(attribute='stat') | list }}"
+    - name: Status the service
+      systemd:
+        name: "{{ item }}"
+        state: started
+      loop:
+        - cartd_1_frontend
+        - cartd_2_frontend
+        - cartd_1_backend
+        - cartd_2_backend
+    - name: Check CartD 1 URL
+      uri:
+        url: http://127.0.0.1:8081/
+        return_content: true
+      register: cartd_result
+    - name: Assert some content
+      assert:
+        that:
+          - cartd_result.status == 200
+    - name: Check CartD 2 URL
+      uri:
+        url: http://127.0.0.1:8082/
+        return_content: true
+      register: cartd_result
+    - name: Assert some content
+      assert:
+        that:
+          - cartd_result.status == 200

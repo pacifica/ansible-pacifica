@@ -1,16 +1,16 @@
 ---
 repos:
   - repo: https://github.com/pre-commit/mirrors-autopep8
-    rev: v1.5.4
+    rev: v1.5.7
     hooks:
       - id: autopep8
   - repo: https://gitlab.com/pycqa/flake8
-    rev: 3.8.4
+    rev: 3.9.2
     hooks:
       - id: flake8
         args: [--max-line-length=120]
-  - repo: git://github.com/pre-commit/pre-commit-hooks
-    rev: v3.2.0
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.0.1
     hooks:
       - id: fix-encoding-pragma
       - id: check-merge-conflict
@@ -50,8 +50,8 @@ repos:
         entry: python -m pylint --rcfile=pylintrc --disable=W0612
         language: system
         types: [python]
-  - repo: git://github.com/Lucas-C/pre-commit-hooks
-    rev: v1.1.9
+  - repo: https://github.com/Lucas-C/pre-commit-hooks
+    rev: v1.1.10
     hooks:
       - id: remove-tabs
       - id: remove-crlf

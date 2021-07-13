@@ -1,0 +1,29 @@
+---
+- name: Verify
+  hosts: all
+  tasks:
+    - name: Stat files
+      stat:
+        path: "{{ item }}"
+      register: file_stat_results
+      loop:
+        - /opt/default/bin/activate
+        - /usr/bin/gcc
+        - /usr/bin/make
+        - /usr/bin/python3
+        - /usr/bin/pip3
+    - name: Verify files
+      assert:
+        that:
+          - item.exists
+          - item.pw_name == 'root'
+          - item.gr_name == 'root'
+      loop: "{{ file_stat_results.results | map(attribute='stat') | list }}"
+    - name: Run Python
+      command: /opt/default/bin/python --version
+      changed_when: false
+      register: python_version_result
+    - name: Assert python version
+      assert:
+        that:
+          - "'3.8' in python_version_result.stdout"

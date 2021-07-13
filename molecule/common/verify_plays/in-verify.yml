@@ -1,0 +1,3 @@
+---
+- import_playbook: common-verify.yml
+- import_playbook: ingest-verify.yml

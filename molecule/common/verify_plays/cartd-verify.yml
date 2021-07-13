@@ -1,0 +1,46 @@
+---
+- name: Verify
+  hosts: all
+  collections:
+    - community.general
+  tasks:
+    - name: Get all ports on hosts
+      listen_ports_facts:
+    - name: Assert Cartd is listening
+      assert:
+        that:
+          - "8081 in (ansible_facts.tcp_listen | map(attribute='port') | list)"
+    - name: Stat files
+      stat:
+        path: "{{ item }}"
+      register: file_stat_results
+      loop:
+        - /opt/default/cartd_frontend.ini
+        - /opt/default/cartd_backend.ini
+        - /opt/default/cartd_frontend-cp.ini
+        - /opt/default/cartd_frontend
+        - /opt/default/cartd_backend
+        - /etc/systemd/system/cartd_frontend.service
+        - /etc/systemd/system/cartd_backend.service
+    - name: Verify files
+      assert:
+        that:
+          - item.exists
+      loop: "{{ file_stat_results.results | map(attribute='stat') | list }}"
+    - name: Status the service
+      systemd:
+        name: cartd_frontend
+        state: started
+    - name: Status the service
+      systemd:
+        name: cartd_backend
+        state: started
+    - name: Check CartD URL
+      uri:
+        url: http://127.0.0.1:8081/
+        return_content: yes
+      register: cartd_result
+    - name: Assert some content
+      assert:
+        that:
+          - cartd_result.status == 200

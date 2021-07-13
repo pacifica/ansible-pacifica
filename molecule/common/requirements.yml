@@ -1,10 +1,13 @@
 ---
-# PostgreSQL
-- name: rh8.postgresql
-  src: geerlingguy.postgresql
-- src: geerlingguy.mysql
-- name: rh7.postgresql
-  src: ANXS.postgresql
-# Redis
-- name: redis
-  src: DavidWittman.redis
+collections:
+  - community.general
+  - community.docker
+roles:
+  - name: rh8.postgresql
+    src: geerlingguy.postgresql
+  - name: geerlingguy.mysql
+    src: geerlingguy.mysql
+  - name: rh7.postgresql
+    src: ANXS.postgresql
+  - name: redis
+    src: DavidWittman.redis

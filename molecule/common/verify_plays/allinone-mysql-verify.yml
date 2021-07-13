@@ -1,0 +1,10 @@
+---
+- import_playbook: archiveinterface-verify.yml
+- import_playbook: redis-verify.yml
+- import_playbook: mysql-verify.yml
+- import_playbook: cartd-verify.yml
+- import_playbook: ingest-verify.yml
+- import_playbook: metadata-verify.yml
+- import_playbook: policy-verify.yml
+- import_playbook: notify-verify.yml
+- import_playbook: uniqueid-verify.yml

@@ -3,16 +3,18 @@
   apt:
     update_cache: true
   when: "ansible_os_family == 'Debian'"
-- name: install curl
+- name: Install common packages
   package:
-    name: curl
+    name:
+      - curl
+      - net-tools
     state: present
-- name: Install development
+- name: Install Debian packages
   package:
     name:
       - gpg-agent
   when: "ansible_os_family == 'Debian'"
-- name: Install development
+- name: Install Redhat packages
   package:
     name:
       - gcc
