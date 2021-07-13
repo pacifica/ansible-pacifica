@@ -1,0 +1,39 @@
+---
+- name: Verify
+  hosts: all
+  collections:
+    - community.general
+  tasks:
+    - name: Get all ports on hosts
+      listen_ports_facts:
+    - name: Assert UniqueID is listening
+      assert:
+        that:
+          - "8051 in (ansible_facts.tcp_listen | map(attribute='port') | list)"
+    - name: Stat files
+      stat:
+        path: "{{ item }}"
+      register: file_stat_results
+      loop:
+        - /opt/default/uniqueid.ini
+        - /opt/default/uniqueid-cp.ini
+        - /opt/default/uniqueid
+        - /etc/systemd/system/uniqueid.service
+    - name: Verify files
+      assert:
+        that:
+          - item.exists
+      loop: "{{ file_stat_results.results | map(attribute='stat') | list }}"
+    - name: Status the service
+      systemd:
+        name: uniqueid
+        state: started
+    - name: Check UniqueID URL
+      uri:
+        url: http://127.0.0.1:8051/
+        return_content: true
+      register: uniqueid_result
+    - name: Assert some content
+      assert:
+        that:
+          - uniqueid_result.status == 200

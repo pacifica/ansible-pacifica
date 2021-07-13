@@ -1,0 +1,6 @@
+---
+- import_playbook: common-verify.yml
+- import_playbook: postgresql-verify.yml
+- import_playbook: metadata-verify.yml
+- import_playbook: policy-verify.yml
+- import_playbook: uniqueid-verify.yml

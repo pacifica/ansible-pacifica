@@ -1,0 +1,37 @@
+---
+- name: Verify
+  hosts: all
+  collections:
+    - community.general
+  tasks:
+    - name: Get all ports on hosts
+      listen_ports_facts:
+    - name: Assert Notify is listening
+      assert:
+        that:
+          - "8070 in (ansible_facts.tcp_listen | map(attribute='port') | list)"
+    - name: Stat files
+      stat:
+        path: "{{ item }}"
+      register: file_stat_results
+      loop:
+        - /opt/default/notify_frontend.ini
+        - /opt/default/notify_backend.ini
+        - /opt/default/notify_frontend-cp.ini
+        - /opt/default/notify_frontend
+        - /opt/default/notify_backend
+        - /etc/systemd/system/notify_frontend.service
+        - /etc/systemd/system/notify_backend.service
+    - name: Verify files
+      assert:
+        that:
+          - item.exists
+      loop: "{{ file_stat_results.results | map(attribute='stat') | list }}"
+    - name: Status the service
+      systemd:
+        name: notify_frontend
+        state: started
+    - name: Status the service
+      systemd:
+        name: notify_backend
+        state: started

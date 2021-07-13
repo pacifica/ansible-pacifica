@@ -1,0 +1,14 @@
+---
+- name: Verify
+  hosts: all
+  tasks:
+    - name: Get all ports on hosts
+      listen_ports_facts:
+    - name: Assert archive interface is listening
+      assert:
+        that:
+          - "6379 in (ansible_facts.tcp_listen | map(attribute='port') | list)"
+    - name: Status the service Debian
+      systemd:
+        name: redis_6379
+        state: started

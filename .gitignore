@@ -107,3 +107,5 @@ molecule/*
 !molecule/common/
 !molecule/gen_scenarios.py
 !molecule/ubuntu/
+
+.vscode

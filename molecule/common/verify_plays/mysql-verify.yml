@@ -1,0 +1,14 @@
+---
+- name: Verify
+  hosts: all
+  tasks:
+    - name: Get all ports on hosts
+      listen_ports_facts:
+    - name: Assert MySQL is listening
+      assert:
+        that:
+          - "3306 in (ansible_facts.tcp_listen | map(attribute='port') | list)"
+    - name: Status the service
+      systemd:
+        name: mysql
+        state: started
